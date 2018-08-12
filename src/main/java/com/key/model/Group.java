@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,7 +38,10 @@ public class Group implements Serializable {
 	@ManyToMany(mappedBy="groups", fetch=FetchType.EAGER)
 	private Set<User> users;
 	
-	
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name="company_id")
+	private Company company;
 	
 	@JsonIgnore
 	@ManyToMany(fetch=FetchType.EAGER)
@@ -122,6 +126,18 @@ public class Group implements Serializable {
 
 	public void setAuthorities(Set<Authority> authorities) {
 		this.authorities = authorities;
+	}
+
+
+
+	public Company getCompany() {
+		return company;
+	}
+
+
+
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 	
 	

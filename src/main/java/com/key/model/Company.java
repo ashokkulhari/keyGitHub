@@ -33,6 +33,10 @@ public class Company implements Serializable{
 	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
 	private Set<User> users;
 	
+	
+	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	private Set<Group> groups;
+	
 	public int getCompanyId() {
 		return companyId;
 	}
@@ -71,6 +75,14 @@ public class Company implements Serializable{
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+
+	public Set<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Set<Group> groups) {
+		this.groups = groups;
 	}
 	
 }
