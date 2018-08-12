@@ -79,9 +79,8 @@ public class UserServiceImpl implements UserService{
 		byte[] decodedBytes = Base64.getDecoder().decode(authHeader.split(" ")[1]);
 		String decodedUsername = new String(decodedBytes).split(":")[0];
 		
-		String decodedpass = new String(decodedBytes).split(":")[1];
+//		String decodedpass = new String(decodedBytes).split(":")[1];
 		
-System.out.println(decodedUsername +"  decodedpass = " +decodedpass);
 		return new String(decodedUsername);
 	}
 

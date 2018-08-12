@@ -1,6 +1,8 @@
 package com.key.controller;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,8 @@ import java.util.Map;
 @RestController
 public class LoginController {
 
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private UserService userService;
 
@@ -28,7 +32,7 @@ public class LoginController {
 	//Done
 	@RequestMapping(value={"/register/"}, method = RequestMethod.POST)
 	public ResponseEntity<?> register(@RequestBody User user, UriComponentsBuilder ucBuilder){
-        System.out.println("Creating new account : " + user.getName());
+		LOGGER.info("Creating new account : " + user.getName());
 		Map<String, String> response = new ManagedMap<>();
 
         if(userService.findUserByEmail(user.getEmail()) != null) {
@@ -47,7 +51,7 @@ public class LoginController {
 	//As we are using Basic auth, login method just verifies is this login:pass valid
 	@RequestMapping(value={"/", "/login/"}, method = RequestMethod.POST)
 	public ResponseEntity<?> login(@RequestBody User user, UriComponentsBuilder ucBuilder){
-		System.out.println("User login : " + user.getEmail());
+		LOGGER.info("User login : " + user.getEmail());
 		Map<String, String> response = new ManagedMap<>();
 
 		User account = userService.findUserByEmail(user.getEmail());
@@ -73,7 +77,7 @@ public class LoginController {
 	public ResponseEntity<?> changePass(@RequestBody User user,
 										@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization,
 										UriComponentsBuilder ucBuilder){
-		System.out.println("User change pass : " + user.getName());
+		LOGGER.info("User change pass : " + user.getName());
 		Map<String, String> response = new ManagedMap<>();
 
 		if(    !userService.extractUsername(authorization).equals(user.getEmail())
@@ -92,7 +96,7 @@ public class LoginController {
 	public ResponseEntity<?> activateUser(@RequestParam("username") String username,
 										  @RequestParam("keyword") String keyword,
 										  UriComponentsBuilder ucBuilder){
-		System.out.println("User activating: username : " + username + "; keyword : " + keyword);
+		LOGGER.info("User activating: username : " + username + "; keyword : " + keyword);
 		User user = new User();
 		user.setKeyword(keyword);
 		user.setEmail(username);
@@ -116,7 +120,7 @@ public class LoginController {
 	@RequestMapping(value={"/resetpass/"}, method = RequestMethod.PUT)
 	public ResponseEntity<?> resetpass(@RequestBody User user, UriComponentsBuilder ucBuilder){
 
-		System.out.println("User change forgotten pass : " + user.getEmail());
+		LOGGER.info("User change forgotten pass : " + user.getEmail());
 		Map<String, String> response = new ManagedMap<>();
 
 		if (userService.resetPass(user)==null) {
@@ -133,7 +137,7 @@ public class LoginController {
 	//Create cron job in database for user deletion
 	@RequestMapping(value={"/deleteuser/"}, method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> deleteUser(@RequestParam("username") String username, UriComponentsBuilder ucBuilder){
-		System.out.println("User " + username + " deleting.");
+		LOGGER.info("User " + username + " deleting.");
 		User user = userService.deleteUser(username);
 		Map<String, String> response = new ManagedMap<>();
 		if(user == null) {
