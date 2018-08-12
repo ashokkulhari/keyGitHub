@@ -1,8 +1,6 @@
 package com.key.service;
 
 import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashSet;
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.key.model.Company;
 import com.key.model.Group;
 import com.key.model.User;
 import com.key.repository.CompanyRepository;
