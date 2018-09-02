@@ -1,6 +1,11 @@
 package com.key.configuration;
 
+import com.key.model.AclConfig;
 import com.key.security.CustomBasicAuthenticationEntryPoint;
+import com.key.service.SecurityServices;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +37,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Value("${spring.queries.roles-query}")
 	private String rolesQuery;
 
+	@Autowired
+	SecurityServices securityServices;
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
@@ -45,6 +53,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
+		List<AclConfig> configs =securityServices.findAll();
+		System.out.println("configs = "+configs);
+		
 
 		http.csrf().disable()
 				.authorizeRequests()
@@ -54,10 +66,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				//.antMatchers("/mail/").permitAll()
 				.antMatchers("/resetpass/").permitAll()
 				.antMatchers("/activateuser/").permitAll()
-				.antMatchers("/changepass/").hasAuthority("ROLE_ADMIN")
-				.antMatchers("/deleteuser/").hasAuthority("ROLE_ADMIN")
-				.antMatchers("/account/**").hasAuthority("ROLE_ADMIN")
+//				.antMatchers("/changepass/").hasAuthority("ROLE_USER")
+//				.antMatchers("/deleteuser/").hasAuthority("ROLE_ADMIN")
+//				.antMatchers("/account/**").hasAuthority("ROLE_ADMIN")
 				.and().httpBasic().realmName(REALM).authenticationEntryPoint(getBasicAuthEntryPoint());
+		for (int i = 0; i < configs.size(); i++) {
+			System.out.println("configs = "+configs.get(i).getPath()+" values "+configs.get(i).getValues());
+			http.authorizeRequests().antMatchers(configs.get(i).getPath()).hasAnyAuthority(configs.get(i).getValues());
+		}
+		
 	}
 
 	@Bean

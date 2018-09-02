@@ -32,11 +32,10 @@ public class Company implements Serializable{
 
 	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
 	private Set<User> users;
-	
-	
+		
 	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
 	private Set<Group> groups;
-	
+		
 	public int getCompanyId() {
 		return companyId;
 	}

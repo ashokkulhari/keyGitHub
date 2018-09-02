@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class LoginController {
 	@Autowired
 	private UserService userService;
 
+	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -33,7 +35,7 @@ public class LoginController {
 	@RequestMapping(value={"/register/"}, method = RequestMethod.POST)
 	public ResponseEntity<?> register(@RequestBody User user, UriComponentsBuilder ucBuilder){
 		LOGGER.info("Creating new account : " + user.getName());
-		Map<String, String> response = new ManagedMap<>();
+		Map<String, Object> response = new ManagedMap<>();
 
         if(userService.findUserByEmail(user.getEmail()) != null) {
 			response.put("msg", "Account with username " + user.getEmail() + " already exists.");
@@ -42,6 +44,7 @@ public class LoginController {
         userService.saveUser(user);
 
 		response.put("msg", "User created.");
+		response.put("userid", user.getUserId());
 		HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getUserId()).toUri());
         return new ResponseEntity<>(response,headers, HttpStatus.CREATED);
@@ -69,6 +72,7 @@ public class LoginController {
 		}
 
 		response.put("msg", "Login successful.");
+		response.put("userfullname", account.getName());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
@@ -77,7 +81,7 @@ public class LoginController {
 	public ResponseEntity<?> changePass(@RequestBody User user,
 										@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization,
 										UriComponentsBuilder ucBuilder){
-		LOGGER.info("User change pass : " + user.getName());
+		LOGGER.info("User change pass : " + user.getName() +"   "+ SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 		Map<String, String> response = new ManagedMap<>();
 
 		if(    !userService.extractUsername(authorization).equals(user.getEmail())

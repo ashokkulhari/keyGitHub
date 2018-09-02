@@ -91,6 +91,33 @@ ENGINE=InnoDB
 
 INSERT INTO `authority` (authority_id, authority_name,audit_insert_date) VALUES (1, 'ROLE_USER',now());
 INSERT INTO `authority` (authority_id, authority_name,audit_insert_date) VALUES (2, 'ROLE_ADMIN',now());
-#insert into `k_group`(group_id,group_name,audit_insert_date) values (1,'Administrator' , now());
+insert into `k_group`(group_id,group_name,audit_insert_date) values (1,'Administrator' , now());
 
-#insert into `group_authority`(group_group_id,authority_authority_id) values (1,2);
+insert into `group_authority`(group_group_id,authority_authority_id) values (1,2);
+
+
+CREATE TABLE `acl_config` (
+	`acl_id` INT(11) NOT NULL,
+	`company_id` INT(11) NOT NULL,
+	`type` VARCHAR(50) NOT NULL,
+	`page` VARCHAR(50) NOT NULL,
+	`path` VARCHAR(50) NOT NULL,
+	`values` VARCHAR(50) NOT NULL,
+	`audit_insert_date` DATETIME NOT NULL,
+	`audit_update_date` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`acl_id`),
+	CONSTRAINT fk_comp_acl FOREIGN KEY (company_id) REFERENCES `company` (company_id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+;
+
+insert into `acl_config`(acl_id, `type` , page,path,`values`,audit_insert_date)
+ values (1,'has_authority','changepassword','/changepass/','ROLE_ADMIN',now());
+
+insert into `acl_config`(acl_id, `type` , page,path,`values`,audit_insert_date)
+ values (2,'has_authority','deleteuser','/deleteuser/','ROLE_ADMIN',now());  
+
+insert into `acl_config`(acl_id, `type` , page,path,`values`,audit_insert_date)
+ values (3,'has_authority','changepassword','/account/**','ROLE_USER,ROLE_ADMIN',now());  
