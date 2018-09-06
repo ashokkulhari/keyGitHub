@@ -71,8 +71,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //				.antMatchers("/account/**").hasAuthority("ROLE_ADMIN")
 				.and().httpBasic().realmName(REALM).authenticationEntryPoint(getBasicAuthEntryPoint());
 		for (int i = 0; i < configs.size(); i++) {
-			System.out.println("configs = "+configs.get(i).getPath()+" values "+configs.get(i).getValues());
-			http.authorizeRequests().antMatchers(configs.get(i).getPath()).hasAnyAuthority(configs.get(i).getValues());
+			System.out.println("configs = "+configs.get(i).getPath()+" values "+configs.get(i).getAuthority().getAuthorityName());
+			http.authorizeRequests().antMatchers(configs.get(i).getPath()).hasAnyAuthority(configs.get(i).getAuthority().getAuthorityName());
 		}
 		
 	}

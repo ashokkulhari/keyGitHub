@@ -42,9 +42,9 @@ public class UserServiceImpl implements UserService{
         user.setKeyword(randomWord());
         Timestamp currentTimestamp = CommonUtils.getCurrentTimestamp();
         user.setAuditInsertDate(currentTimestamp);
-        Group userGroup = groupRepository.findByGroupName("Administrator");
+        Group userGroup = groupRepository.findByGroupName("mcomp1AdminGrp");
         user.setGroups(new HashSet<Group>(Arrays.asList(userGroup)));
-        user.setCompany(companyRepository.findByCompanyName("test"));
+        user.setCompany(companyRepository.findByCompanyName("company1"));
 		userRepository.save(user);
 
 //		mailService.sendActivationMail(user);

@@ -1,6 +1,5 @@
 package com.key.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,105 +42,65 @@ public class Group implements Serializable {
 	@JoinColumn(name="company_id")
 	private Company company;
 	
-	@JsonIgnore
-	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(
-		name="group_authority"
-		, joinColumns={
-			@JoinColumn(name="group_group_id")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="authority_authority_id")
-			}
-		)
-	private Set<Authority> authorities;
-
-
+	@ManyToMany(mappedBy="Groups", fetch=FetchType.EAGER)
+	private Set<Role> roles;
 
 	public int getGroupId() {
 		return groupId;
 	}
 
-
-
 	public void setGroupId(int groupId) {
 		this.groupId = groupId;
 	}
-
-
 
 	public String getGroupName() {
 		return groupName;
 	}
 
-
-
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
-
-
 
 	public Timestamp getAuditInsertDate() {
 		return auditInsertDate;
 	}
 
-
-
 	public void setAuditInsertDate(Timestamp auditInsertDate) {
 		this.auditInsertDate = auditInsertDate;
 	}
-
-
 
 	public Timestamp getAuditUpdatetDate() {
 		return auditUpdatetDate;
 	}
 
-
-
 	public void setAuditUpdatetDate(Timestamp auditUpdatetDate) {
 		this.auditUpdatetDate = auditUpdatetDate;
 	}
-
-
 
 	public Set<User> getUsers() {
 		return users;
 	}
 
-
-
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
-
-
-
-	public Set<Authority> getAuthorities() {
-		return authorities;
-	}
-
-
-
-	public void setAuthorities(Set<Authority> authorities) {
-		this.authorities = authorities;
-	}
-
-
 
 	public Company getCompany() {
 		return company;
 	}
 
-
-
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-	
-	
-		
-	
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+
 	
 }
