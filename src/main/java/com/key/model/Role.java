@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.*;
+
+import com.key.configuration.Auditable;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -15,16 +18,12 @@ import java.util.Set;
  */
 @Entity
 @Table(name="k_role")
-public class Role implements Serializable {
+public class Role extends Auditable<String> implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="role_id")
 	private int roleId;
-	@Column(name = "audit_insert_date")
-	private Timestamp auditInsertDate;
-
-	@Column(name = "audit_update_date")
-	private Timestamp auditUpdatetDate;
+	
 	@Column(name="role_name")
 	private String roleName;
 	//bi-directional many-to-many association to KGroup
@@ -64,26 +63,6 @@ public class Role implements Serializable {
 
 	public void setRoleId(int roleId) {
 		this.roleId = roleId;
-	}
-
-
-	public Timestamp getAuditInsertDate() {
-		return auditInsertDate;
-	}
-
-
-	public void setAuditInsertDate(Timestamp auditInsertDate) {
-		this.auditInsertDate = auditInsertDate;
-	}
-
-
-	public Timestamp getAuditUpdatetDate() {
-		return auditUpdatetDate;
-	}
-
-
-	public void setAuditUpdatetDate(Timestamp auditUpdatetDate) {
-		this.auditUpdatetDate = auditUpdatetDate;
 	}
 
 

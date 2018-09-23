@@ -12,20 +12,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.key.configuration.Auditable;
+
 
 @Entity
 @Table(name = "acl_config")
-	public class AclConfig implements Serializable {
+	public class AclConfig extends Auditable<String> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="acl_id")
 	private int aclId;
-	@Column(name = "audit_insert_date")
-	private Timestamp auditInsertDate;
-
-	@Column(name = "audit_update_date")
-	private Timestamp auditUpdatetDate;
+	
 	@Column(name="page")
 	private String page;
 	@Column(name="path")
@@ -41,18 +39,7 @@ import javax.persistence.Table;
 	public void setAclId(int aclId) {
 		this.aclId = aclId;
 	}
-	public Timestamp getAuditInsertDate() {
-		return auditInsertDate;
-	}
-	public void setAuditInsertDate(Timestamp auditInsertDate) {
-		this.auditInsertDate = auditInsertDate;
-	}
-	public Timestamp getAuditUpdatetDate() {
-		return auditUpdatetDate;
-	}
-	public void setAuditUpdatetDate(Timestamp auditUpdatetDate) {
-		this.auditUpdatetDate = auditUpdatetDate;
-	}
+	
 	public String getPage() {
 		return page;
 	}

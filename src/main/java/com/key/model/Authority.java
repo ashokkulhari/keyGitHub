@@ -16,11 +16,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.key.configuration.Auditable;
+
 
 
 @Entity
 @Table(name = "authority")
-public class Authority implements Serializable {
+public class Authority extends Auditable<String> implements Serializable {
 
 	
 	@Id
@@ -30,11 +32,7 @@ public class Authority implements Serializable {
 	@Column(name="authority_name")
 	private String authorityName;
 	@Column(name = "audit_insert_date")
-	private Timestamp auditInsertDate;
-
-	@Column(name = "audit_update_date")
-	private Timestamp auditUpdatetDate;
-
+	
 	@OneToMany(mappedBy="authority", fetch=FetchType.EAGER)
 	private Set<AclConfig> aclConfigs;
 	@OneToMany(mappedBy="authority", fetch=FetchType.EAGER)
@@ -51,18 +49,7 @@ public class Authority implements Serializable {
 	public void setAuthorityName(String authorityName) {
 		this.authorityName = authorityName;
 	}
-	public Timestamp getAuditInsertDate() {
-		return auditInsertDate;
-	}
-	public void setAuditInsertDate(Timestamp auditInsertDate) {
-		this.auditInsertDate = auditInsertDate;
-	}
-	public Timestamp getAuditUpdatetDate() {
-		return auditUpdatetDate;
-	}
-	public void setAuditUpdatetDate(Timestamp auditUpdatetDate) {
-		this.auditUpdatetDate = auditUpdatetDate;
-	}
+	
 	public Set<AclConfig> getAclConfigs() {
 		return aclConfigs;
 	}

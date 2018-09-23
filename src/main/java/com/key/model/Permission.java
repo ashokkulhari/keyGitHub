@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.key.configuration.Auditable;
 
 import java.util.List;
 import java.util.Set;
@@ -17,17 +18,13 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "permission")
-public class Permission implements Serializable {
+public class Permission extends Auditable<String> implements Serializable {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="permission_id")
 	private int permissionId;
-	@Column(name = "audit_insert_date")
-	private Timestamp auditInsertDate;
-
-	@Column(name = "audit_update_date")
-	private Timestamp auditUpdatetDate;
+	
 	@Column(name="permission_name")
 	private String permissionName;
 	
@@ -42,21 +39,7 @@ public class Permission implements Serializable {
 		this.permissionId = permissionId;
 	}
 
-	public Timestamp getAuditInsertDate() {
-		return auditInsertDate;
-	}
-
-	public void setAuditInsertDate(Timestamp auditInsertDate) {
-		this.auditInsertDate = auditInsertDate;
-	}
-
-	public Timestamp getAuditUpdatetDate() {
-		return auditUpdatetDate;
-	}
-
-	public void setAuditUpdatetDate(Timestamp auditUpdatetDate) {
-		this.auditUpdatetDate = auditUpdatetDate;
-	}
+	
 
 	public String getPermissionName() {
 		return permissionName;

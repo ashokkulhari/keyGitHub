@@ -13,11 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.key.configuration.Auditable;
+
 
 
 @Entity
 @Table(name = "company")
-public class Company implements Serializable{
+public class Company extends Auditable<String> implements Serializable{
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,11 +31,6 @@ public class Company implements Serializable{
 	@Column(name="is_deleted")
 	private int isDeleted;
 	
-	@Column(name = "audit_insert_date")
-	private Timestamp auditInsertDate;
-
-	@Column(name = "audit_update_date")
-	private Timestamp auditUpdatetDate;
 
 	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
 	private Set<User> users;
@@ -60,18 +57,7 @@ public class Company implements Serializable{
 	public void setIsDeleted(int isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	public Timestamp getAuditInsertDate() {
-		return auditInsertDate;
-	}
-	public void setAuditInsertDate(Timestamp auditInsertDate) {
-		this.auditInsertDate = auditInsertDate;
-	}
-	public Timestamp getAuditUpdatetDate() {
-		return auditUpdatetDate;
-	}
-	public void setAuditUpdatetDate(Timestamp auditUpdatetDate) {
-		this.auditUpdatetDate = auditUpdatetDate;
-	}
+	
 	public Set<User> getUsers() {
 		return users;
 	}

@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.key.configuration.Auditable;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -20,18 +21,14 @@ import java.util.Set;
 
 @Entity
 @Table(name = "k_group")
-public class Group implements Serializable {
+public class Group extends Auditable<String> implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="group_id")
 	private int groupId;
 	@Column(name="group_name")
 	private String groupName;
-	@Column(name = "audit_insert_date")
-	private Timestamp auditInsertDate;
-
-	@Column(name = "audit_update_date")
-	private Timestamp auditUpdatetDate;
+	
 	
 	@JsonIgnore
 	@ManyToMany(mappedBy="groups", fetch=FetchType.EAGER)
@@ -61,21 +58,7 @@ public class Group implements Serializable {
 		this.groupName = groupName;
 	}
 
-	public Timestamp getAuditInsertDate() {
-		return auditInsertDate;
-	}
-
-	public void setAuditInsertDate(Timestamp auditInsertDate) {
-		this.auditInsertDate = auditInsertDate;
-	}
-
-	public Timestamp getAuditUpdatetDate() {
-		return auditUpdatetDate;
-	}
-
-	public void setAuditUpdatetDate(Timestamp auditUpdatetDate) {
-		this.auditUpdatetDate = auditUpdatetDate;
-	}
+	
 
 	public Set<User> getUsers() {
 		return users;

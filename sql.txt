@@ -23,8 +23,10 @@ CREATE TABLE IF NOT EXISTS `acl_config` (
   `type` varchar(50) NOT NULL,
   `page` varchar(50) NOT NULL,
   `path` varchar(50) NOT NULL,
-  `audit_insert_date` datetime NOT NULL,
-  `audit_update_date` datetime DEFAULT NULL,
+  `created_by` varchar(255) DEFAULT NULL,
+  `creation_date` datetime DEFAULT NULL,
+  `last_modified_by` varchar(255) DEFAULT NULL,
+  `last_modified_date` datetime DEFAULT NULL,
   PRIMARY KEY (`acl_id`),
   KEY `fk_authority_acl` (`authority_id`),
   CONSTRAINT `fk_authority_acl` FOREIGN KEY (`authority_id`) REFERENCES `authority` (`authority_id`)
@@ -32,28 +34,30 @@ CREATE TABLE IF NOT EXISTS `acl_config` (
 
 -- Dumping data for table keydb.acl_config: ~3 rows (approximately)
 /*!40000 ALTER TABLE `acl_config` DISABLE KEYS */;
-INSERT INTO `acl_config` (`acl_id`, `authority_id`, `type`, `page`, `path`, `audit_insert_date`, `audit_update_date`) VALUES
-	(1, 1, 'has_authority', 'changepassword', '/changepass/', '2018-09-02 22:06:02', NULL),
-	(2, 2, 'has_authority', 'deleteuser', '/deleteuser/', '2018-09-02 22:06:02', NULL),
-	(3, 3, 'has_authority', 'accountsall', '/account/**', '2018-09-02 22:06:02', NULL);
+INSERT INTO `acl_config` (`acl_id`, `authority_id`, `type`, `page`, `path`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`) VALUES
+	(1, 1, 'has_authority', 'changepassword', '/changepass/', NULL, NULL, NULL, NULL),
+	(2, 2, 'has_authority', 'deleteuser', '/deleteuser/', NULL, NULL, NULL, NULL),
+	(3, 3, 'has_authority', 'accountsall', '/account/**', NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `acl_config` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.authority
 CREATE TABLE IF NOT EXISTS `authority` (
   `authority_id` int(11) NOT NULL,
   `authority_name` varchar(50) NOT NULL,
-  `audit_insert_date` datetime NOT NULL,
-  `audit_update_date` datetime DEFAULT NULL,
+  `created_by` varchar(255) DEFAULT NULL,
+  `creation_date` datetime DEFAULT NULL,
+  `last_modified_by` varchar(255) DEFAULT NULL,
+  `last_modified_date` datetime DEFAULT NULL,
   PRIMARY KEY (`authority_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table keydb.authority: ~4 rows (approximately)
 /*!40000 ALTER TABLE `authority` DISABLE KEYS */;
-INSERT INTO `authority` (`authority_id`, `authority_name`, `audit_insert_date`, `audit_update_date`) VALUES
-	(1, 'CHANGE_PASS', '2018-09-02 22:06:02', NULL),
-	(2, 'DEL_USER', '2018-09-02 22:06:02', NULL),
-	(3, 'ACCOUNTS', '2018-09-02 22:06:02', NULL),
-	(4, 'INVOICE', '2018-09-02 22:06:02', NULL);
+INSERT INTO `authority` (`authority_id`, `authority_name`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`) VALUES
+	(1, 'CHANGE_PASS', NULL, NULL, NULL, NULL),
+	(2, 'DEL_USER', NULL, NULL, NULL, NULL),
+	(3, 'ACCOUNTS', NULL, NULL, NULL, NULL),
+	(4, 'INVOICE', NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `authority` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.category
@@ -94,17 +98,19 @@ CREATE TABLE IF NOT EXISTS `color` (
 CREATE TABLE IF NOT EXISTS `company` (
   `company_id` int(11) NOT NULL,
   `company_name` varchar(50) NOT NULL,
-  `audit_insert_date` datetime NOT NULL,
-  `audit_update_date` datetime DEFAULT NULL,
   `is_deleted` int(1) DEFAULT NULL,
+  `created_by` varchar(255) DEFAULT NULL,
+  `creation_date` datetime DEFAULT NULL,
+  `last_modified_by` varchar(255) DEFAULT NULL,
+  `last_modified_date` datetime DEFAULT NULL,
   PRIMARY KEY (`company_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table keydb.company: ~2 rows (approximately)
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
-INSERT INTO `company` (`company_id`, `company_name`, `audit_insert_date`, `audit_update_date`, `is_deleted`) VALUES
-	(1, 'company1', '2018-09-02 22:06:02', NULL, 0),
-	(2, 'company2', '2018-09-02 22:06:02', NULL, 0);
+INSERT INTO `company` (`company_id`, `company_name`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`) VALUES
+	(1, 'company1', 0, NULL, NULL, NULL, NULL),
+	(2, 'company2', 0, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.customer
@@ -264,8 +270,10 @@ CREATE TABLE IF NOT EXISTS `k_group` (
   `group_id` int(11) NOT NULL,
   `group_name` varchar(50) NOT NULL,
   `company_id` int(11) NOT NULL,
-  `audit_insert_date` datetime NOT NULL,
-  `audit_update_date` datetime DEFAULT NULL,
+  `created_by` varchar(255) DEFAULT NULL,
+  `creation_date` datetime DEFAULT NULL,
+  `last_modified_by` varchar(255) DEFAULT NULL,
+  `last_modified_date` datetime DEFAULT NULL,
   PRIMARY KEY (`group_id`),
   KEY `fk_comp_g` (`company_id`),
   CONSTRAINT `fk_comp_g` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
@@ -273,11 +281,11 @@ CREATE TABLE IF NOT EXISTS `k_group` (
 
 -- Dumping data for table keydb.k_group: ~4 rows (approximately)
 /*!40000 ALTER TABLE `k_group` DISABLE KEYS */;
-INSERT INTO `k_group` (`group_id`, `group_name`, `company_id`, `audit_insert_date`, `audit_update_date`) VALUES
-	(1, 'mcomp1AdminGrp', 1, '2018-09-02 22:06:02', NULL),
-	(2, 'mcomp1AccountsGrp', 1, '2018-09-02 22:06:02', NULL),
-	(3, 'mcomp2AdminGrp', 2, '2018-09-02 22:06:02', NULL),
-	(4, 'mcomp2Account-writeGrp', 2, '2018-09-02 22:06:02', NULL);
+INSERT INTO `k_group` (`group_id`, `group_name`, `company_id`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`) VALUES
+	(1, 'mcomp1AdminGrp', 1, NULL, NULL, NULL, NULL),
+	(2, 'mcomp1AccountsGrp', 1, NULL, NULL, NULL, NULL),
+	(3, 'mcomp2AdminGrp', 2, NULL, NULL, NULL, NULL),
+	(4, 'mcomp2Account-writeGrp', 2, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `k_group` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.k_role
@@ -285,8 +293,10 @@ CREATE TABLE IF NOT EXISTS `k_role` (
   `role_id` int(11) NOT NULL,
   `role_name` varchar(50) NOT NULL,
   `company_id` int(11) NOT NULL,
-  `audit_insert_date` datetime NOT NULL,
-  `audit_update_date` datetime DEFAULT NULL,
+  `created_by` varchar(255) DEFAULT NULL,
+  `creation_date` datetime DEFAULT NULL,
+  `last_modified_by` varchar(255) DEFAULT NULL,
+  `last_modified_date` datetime DEFAULT NULL,
   PRIMARY KEY (`role_id`),
   KEY `fk_comp_r` (`company_id`),
   CONSTRAINT `fk_comp_r` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
@@ -294,11 +304,11 @@ CREATE TABLE IF NOT EXISTS `k_role` (
 
 -- Dumping data for table keydb.k_role: ~4 rows (approximately)
 /*!40000 ALTER TABLE `k_role` DISABLE KEYS */;
-INSERT INTO `k_role` (`role_id`, `role_name`, `company_id`, `audit_insert_date`, `audit_update_date`) VALUES
-	(1, 'mycomp1AdminRole', 1, '2018-09-02 22:06:02', NULL),
-	(2, 'mycomp1AccountsRole', 1, '2018-09-02 22:06:02', NULL),
-	(3, 'mycomp2AdminRole', 2, '2018-09-02 22:06:02', NULL),
-	(4, 'mycomp2Acc-writeRole', 2, '2018-09-02 22:06:02', NULL);
+INSERT INTO `k_role` (`role_id`, `role_name`, `company_id`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`) VALUES
+	(1, 'mycomp1AdminRole', 1, NULL, NULL, NULL, NULL),
+	(2, 'mycomp1AccountsRole', 1, NULL, NULL, NULL, NULL),
+	(3, 'mycomp2AdminRole', 2, NULL, NULL, NULL, NULL),
+	(4, 'mycomp2Acc-writeRole', 2, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `k_role` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.location
@@ -356,19 +366,21 @@ CREATE TABLE IF NOT EXISTS `model` (
 CREATE TABLE IF NOT EXISTS `permission` (
   `permission_id` int(11) NOT NULL,
   `permission_name` varchar(50) NOT NULL,
-  `audit_insert_date` datetime NOT NULL,
-  `audit_update_date` datetime DEFAULT NULL,
+  `created_by` varchar(255) DEFAULT NULL,
+  `creation_date` datetime DEFAULT NULL,
+  `last_modified_by` varchar(255) DEFAULT NULL,
+  `last_modified_date` datetime DEFAULT NULL,
   PRIMARY KEY (`permission_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping data for table keydb.permission: ~5 rows (approximately)
 /*!40000 ALTER TABLE `permission` DISABLE KEYS */;
-INSERT INTO `permission` (`permission_id`, `permission_name`, `audit_insert_date`, `audit_update_date`) VALUES
-	(1, 'READ', '2018-09-02 22:06:02', NULL),
-	(2, 'WRITE', '2018-09-02 22:06:02', NULL),
-	(3, 'DELETE', '2018-09-02 22:06:02', NULL),
-	(4, 'ADMIN', '2018-09-02 22:06:02', NULL),
-	(5, 'O_DELETE', '2018-09-02 22:06:02', NULL);
+INSERT INTO `permission` (`permission_id`, `permission_name`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`) VALUES
+	(1, 'READ', NULL, NULL, NULL, NULL),
+	(2, 'WRITE', NULL, NULL, NULL, NULL),
+	(3, 'DELETE', NULL, NULL, NULL, NULL),
+	(4, 'ADMIN', NULL, NULL, NULL, NULL),
+	(5, 'O_DELETE', NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.permission_set
@@ -542,7 +554,7 @@ CREATE TABLE IF NOT EXISTS `user_group` (
   CONSTRAINT `fk_user_g` FOREIGN KEY (`user_user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table keydb.user_group: ~2 rows (approximately)
+-- Dumping data for table keydb.user_group: ~1 rows (approximately)
 /*!40000 ALTER TABLE `user_group` DISABLE KEYS */;
 INSERT INTO `user_group` (`group_group_id`, `user_user_id`) VALUES
 	(1, 6),
