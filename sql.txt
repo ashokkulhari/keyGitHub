@@ -13,12 +13,10 @@
 
 
 -- Dumping database structure for keydb
-DROP DATABASE IF EXISTS `keydb`;
 CREATE DATABASE IF NOT EXISTS `keydb` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `keydb`;
 
 -- Dumping structure for table keydb.acl_config
-DROP TABLE IF EXISTS `acl_config`;
 CREATE TABLE IF NOT EXISTS `acl_config` (
   `acl_id` int(11) NOT NULL,
   `authority_id` int(11) NOT NULL,
@@ -41,7 +39,6 @@ INSERT INTO `acl_config` (`acl_id`, `authority_id`, `type`, `page`, `path`, `aud
 /*!40000 ALTER TABLE `acl_config` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.authority
-DROP TABLE IF EXISTS `authority`;
 CREATE TABLE IF NOT EXISTS `authority` (
   `authority_id` int(11) NOT NULL,
   `authority_name` varchar(50) NOT NULL,
@@ -59,8 +56,41 @@ INSERT INTO `authority` (`authority_id`, `authority_name`, `audit_insert_date`, 
 	(4, 'INVOICE', '2018-09-02 22:06:02', NULL);
 /*!40000 ALTER TABLE `authority` ENABLE KEYS */;
 
+-- Dumping structure for table keydb.category
+CREATE TABLE IF NOT EXISTS `category` (
+  `category_id` int(11) NOT NULL,
+  `category_name` varchar(50) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`category_id`),
+  KEY `fk_comp_cat` (`company_id`),
+  CONSTRAINT `fk_comp_cat` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.category: ~0 rows (approximately)
+/*!40000 ALTER TABLE `category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `category` ENABLE KEYS */;
+
+-- Dumping structure for table keydb.color
+CREATE TABLE IF NOT EXISTS `color` (
+  `color_id` int(11) NOT NULL,
+  `color_name` varchar(50) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`color_id`),
+  KEY `fk_comp_color` (`company_id`),
+  CONSTRAINT `fk_comp_color` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.color: ~0 rows (approximately)
+/*!40000 ALTER TABLE `color` DISABLE KEYS */;
+/*!40000 ALTER TABLE `color` ENABLE KEYS */;
+
 -- Dumping structure for table keydb.company
-DROP TABLE IF EXISTS `company`;
 CREATE TABLE IF NOT EXISTS `company` (
   `company_id` int(11) NOT NULL,
   `company_name` varchar(50) NOT NULL,
@@ -77,8 +107,56 @@ INSERT INTO `company` (`company_id`, `company_name`, `audit_insert_date`, `audit
 	(2, 'company2', '2018-09-02 22:06:02', NULL, 0);
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 
+-- Dumping structure for table keydb.customer
+CREATE TABLE IF NOT EXISTS `customer` (
+  `customer_id` int(11) NOT NULL,
+  `customer_name` varchar(50) NOT NULL,
+  `contact_name` varchar(50) DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `mobile` varchar(50) NOT NULL,
+  `fax` varchar(50) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `internet` varchar(50) DEFAULT NULL,
+  `credit_limit` int(11) DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
+  `credit_period` int(11) DEFAULT NULL,
+  `include_credit_limit` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `remarks` varchar(50) DEFAULT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`customer_id`),
+  KEY `fk_cust_cat` (`category_id`),
+  KEY `fk_comp_cust` (`company_id`),
+  CONSTRAINT `fk_comp_cust` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`),
+  CONSTRAINT `fk_cust_cat` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.customer: ~0 rows (approximately)
+/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
+
+-- Dumping structure for table keydb.group_code
+CREATE TABLE IF NOT EXISTS `group_code` (
+  `group_code_id` int(11) NOT NULL,
+  `group_code_name` varchar(50) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`group_code_id`),
+  KEY `fk_comp_gcode` (`company_id`),
+  CONSTRAINT `fk_comp_gcode` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.group_code: ~0 rows (approximately)
+/*!40000 ALTER TABLE `group_code` DISABLE KEYS */;
+/*!40000 ALTER TABLE `group_code` ENABLE KEYS */;
+
 -- Dumping structure for table keydb.group_role
-DROP TABLE IF EXISTS `group_role`;
 CREATE TABLE IF NOT EXISTS `group_role` (
   `group_group_id` int(11) NOT NULL,
   `role_role_id` int(11) NOT NULL,
@@ -98,7 +176,6 @@ INSERT INTO `group_role` (`group_group_id`, `role_role_id`) VALUES
 /*!40000 ALTER TABLE `group_role` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.hibernate_sequence
-DROP TABLE IF EXISTS `hibernate_sequence`;
 CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -106,18 +183,83 @@ CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
 -- Dumping data for table keydb.hibernate_sequence: 8 rows
 /*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
 INSERT INTO `hibernate_sequence` (`next_val`) VALUES
-	(3),
-	(3),
-	(3),
-	(3),
-	(3),
-	(3),
-	(3),
-	(3);
+	(8),
+	(8),
+	(8),
+	(8),
+	(8),
+	(8),
+	(8),
+	(8);
 /*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
 
+-- Dumping structure for table keydb.invoice
+CREATE TABLE IF NOT EXISTS `invoice` (
+  `invoice_id` int(11) NOT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL,
+  `attention` varchar(50) DEFAULT NULL,
+  `tele_phone` varchar(50) DEFAULT NULL,
+  `invoice_no` varchar(50) NOT NULL,
+  `sr_no` int(11) DEFAULT NULL,
+  `invoice_date` datetime NOT NULL,
+  `lpo_number` varchar(50) NOT NULL,
+  `lpo_date` datetime NOT NULL,
+  `cust_ref` varchar(50) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`invoice_id`),
+  KEY `fk_invc_cust` (`customer_id`),
+  KEY `fk_invc_user` (`user_id`),
+  KEY `fk_comp_inv_main` (`company_id`),
+  CONSTRAINT `fk_comp_inv_main` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`),
+  CONSTRAINT `fk_invc_cust` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
+  CONSTRAINT `fk_invc_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.invoice: ~0 rows (approximately)
+/*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
+/*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
+
+-- Dumping structure for table keydb.invoice_details
+CREATE TABLE IF NOT EXISTS `invoice_details` (
+  `invoice_id` int(11) NOT NULL,
+  `invoice_line_id` int(11) NOT NULL,
+  `item_id` int(11) DEFAULT NULL,
+  `unit_id` int(11) NOT NULL,
+  `unit_price` double DEFAULT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `landig_cost` double DEFAULT NULL,
+  `sell_price` double DEFAULT NULL,
+  `discount_per` double DEFAULT NULL,
+  `discount` double DEFAULT NULL,
+  `total` double DEFAULT NULL,
+  `units_in_stock` int(11) DEFAULT NULL,
+  `discontiued` int(1) DEFAULT NULL,
+  `date_of_expiry` datetime DEFAULT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`invoice_line_id`),
+  KEY `fk_invc_detls_invc` (`invoice_id`),
+  KEY `fk_invc_detls_prod_mst` (`item_id`),
+  KEY `fk_invc_detls_units` (`unit_id`),
+  KEY `fk_comp_invc_detls` (`company_id`),
+  CONSTRAINT `fk_comp_invc_detls` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`),
+  CONSTRAINT `fk_invc_detls_invc` FOREIGN KEY (`invoice_id`) REFERENCES `invoice` (`invoice_id`),
+  CONSTRAINT `fk_invc_detls_prod_mst` FOREIGN KEY (`item_id`) REFERENCES `product_master` (`item_id`),
+  CONSTRAINT `fk_invc_detls_units` FOREIGN KEY (`unit_id`) REFERENCES `units` (`unit_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.invoice_details: ~0 rows (approximately)
+/*!40000 ALTER TABLE `invoice_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `invoice_details` ENABLE KEYS */;
+
 -- Dumping structure for table keydb.k_group
-DROP TABLE IF EXISTS `k_group`;
 CREATE TABLE IF NOT EXISTS `k_group` (
   `group_id` int(11) NOT NULL,
   `group_name` varchar(50) NOT NULL,
@@ -134,12 +276,11 @@ CREATE TABLE IF NOT EXISTS `k_group` (
 INSERT INTO `k_group` (`group_id`, `group_name`, `company_id`, `audit_insert_date`, `audit_update_date`) VALUES
 	(1, 'mcomp1AdminGrp', 1, '2018-09-02 22:06:02', NULL),
 	(2, 'mcomp1AccountsGrp', 1, '2018-09-02 22:06:02', NULL),
-	(3, 'mcomp2AdminGrp', 1, '2018-09-02 22:06:02', NULL),
-	(4, 'mcomp2InvoiceGrp', 1, '2018-09-02 22:06:02', NULL);
+	(3, 'mcomp2AdminGrp', 2, '2018-09-02 22:06:02', NULL),
+	(4, 'mcomp2Account-writeGrp', 2, '2018-09-02 22:06:02', NULL);
 /*!40000 ALTER TABLE `k_group` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.k_role
-DROP TABLE IF EXISTS `k_role`;
 CREATE TABLE IF NOT EXISTS `k_role` (
   `role_id` int(11) NOT NULL,
   `role_name` varchar(50) NOT NULL,
@@ -157,11 +298,61 @@ INSERT INTO `k_role` (`role_id`, `role_name`, `company_id`, `audit_insert_date`,
 	(1, 'mycomp1AdminRole', 1, '2018-09-02 22:06:02', NULL),
 	(2, 'mycomp1AccountsRole', 1, '2018-09-02 22:06:02', NULL),
 	(3, 'mycomp2AdminRole', 2, '2018-09-02 22:06:02', NULL),
-	(4, 'mycomp2InvoiceRole', 2, '2018-09-02 22:06:02', NULL);
+	(4, 'mycomp2Acc-writeRole', 2, '2018-09-02 22:06:02', NULL);
 /*!40000 ALTER TABLE `k_role` ENABLE KEYS */;
 
+-- Dumping structure for table keydb.location
+CREATE TABLE IF NOT EXISTS `location` (
+  `location_id` int(11) NOT NULL,
+  `location_name` varchar(50) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`location_id`),
+  KEY `fk_comp_loc` (`company_id`),
+  CONSTRAINT `fk_comp_loc` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.location: ~0 rows (approximately)
+/*!40000 ALTER TABLE `location` DISABLE KEYS */;
+/*!40000 ALTER TABLE `location` ENABLE KEYS */;
+
+-- Dumping structure for table keydb.manufacture
+CREATE TABLE IF NOT EXISTS `manufacture` (
+  `manufacture_id` int(11) NOT NULL,
+  `manufacture_name` varchar(50) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`manufacture_id`),
+  KEY `fk_comp_manf` (`company_id`),
+  CONSTRAINT `fk_comp_manf` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.manufacture: ~0 rows (approximately)
+/*!40000 ALTER TABLE `manufacture` DISABLE KEYS */;
+/*!40000 ALTER TABLE `manufacture` ENABLE KEYS */;
+
+-- Dumping structure for table keydb.model
+CREATE TABLE IF NOT EXISTS `model` (
+  `model_id` int(11) NOT NULL,
+  `model_name` varchar(50) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`model_id`),
+  KEY `fk_comp_model` (`company_id`),
+  CONSTRAINT `fk_comp_model` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.model: ~0 rows (approximately)
+/*!40000 ALTER TABLE `model` DISABLE KEYS */;
+/*!40000 ALTER TABLE `model` ENABLE KEYS */;
+
 -- Dumping structure for table keydb.permission
-DROP TABLE IF EXISTS `permission`;
 CREATE TABLE IF NOT EXISTS `permission` (
   `permission_id` int(11) NOT NULL,
   `permission_name` varchar(50) NOT NULL,
@@ -181,7 +372,6 @@ INSERT INTO `permission` (`permission_id`, `permission_name`, `audit_insert_date
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.permission_set
-DROP TABLE IF EXISTS `permission_set`;
 CREATE TABLE IF NOT EXISTS `permission_set` (
   `permission_set_id` int(11) NOT NULL,
   `authority_id` int(11) NOT NULL,
@@ -204,7 +394,6 @@ INSERT INTO `permission_set` (`permission_set_id`, `authority_id`, `permission_i
 /*!40000 ALTER TABLE `permission_set` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.per_set_role
-DROP TABLE IF EXISTS `per_set_role`;
 CREATE TABLE IF NOT EXISTS `per_set_role` (
   `per_set_per_set_id` int(11) NOT NULL,
   `role_role_id` int(11) NOT NULL,
@@ -223,32 +412,127 @@ INSERT INTO `per_set_role` (`per_set_per_set_id`, `role_role_id`) VALUES
 	(4, 4);
 /*!40000 ALTER TABLE `per_set_role` ENABLE KEYS */;
 
+-- Dumping structure for table keydb.product_master
+CREATE TABLE IF NOT EXISTS `product_master` (
+  `item_id` int(11) NOT NULL,
+  `item_code` varchar(100) NOT NULL,
+  `item_name` varchar(100) NOT NULL,
+  `item_bar_code` varchar(100) DEFAULT NULL,
+  `item_location_name` varchar(100) DEFAULT NULL,
+  `unit_id` int(11) DEFAULT NULL,
+  `item_cost` double DEFAULT NULL,
+  `item_avg_cost` double DEFAULT NULL,
+  `item_shop_cost` double DEFAULT NULL,
+  `item_sell_price` double DEFAULT NULL,
+  `item_tender_price` double DEFAULT NULL,
+  `item_min_sell_price` double DEFAULT NULL,
+  `item_w_sale_price` double DEFAULT NULL,
+  `item_discount` double DEFAULT NULL,
+  `sub_category_id` int(11) DEFAULT NULL,
+  `group_code_id` int(11) DEFAULT NULL,
+  `model_id` int(11) DEFAULT NULL,
+  `madein_id` int(11) DEFAULT NULL,
+  `color_id` int(11) DEFAULT NULL,
+  `vendor_id` int(11) DEFAULT NULL,
+  `location_id` int(11) DEFAULT NULL,
+  `manufacture_id` int(11) DEFAULT NULL,
+  `reo_rder_level` double DEFAULT NULL,
+  `max_level` double DEFAULT NULL,
+  `min_level` double DEFAULT NULL,
+  `danger_level` double DEFAULT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`item_id`),
+  KEY `fk_prod_mastr_sub_cat` (`sub_category_id`),
+  KEY `fk_prod_mastr_unit` (`unit_id`),
+  KEY `fk_prod_mastr_gcode` (`group_code_id`),
+  KEY `fk_prod_mastr_model` (`model_id`),
+  KEY `fk_prod_mastr_color` (`color_id`),
+  KEY `fk_prod_mastr_vendor` (`vendor_id`),
+  KEY `fk_prod_mastr_location` (`location_id`),
+  KEY `fk_prod_mastr_manufacture` (`manufacture_id`),
+  KEY `fk_comp_prod_master` (`company_id`),
+  CONSTRAINT `fk_comp_prod_master` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`),
+  CONSTRAINT `fk_prod_mastr_color` FOREIGN KEY (`color_id`) REFERENCES `color` (`color_id`),
+  CONSTRAINT `fk_prod_mastr_gcode` FOREIGN KEY (`group_code_id`) REFERENCES `group_code` (`group_code_id`),
+  CONSTRAINT `fk_prod_mastr_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`),
+  CONSTRAINT `fk_prod_mastr_manufacture` FOREIGN KEY (`manufacture_id`) REFERENCES `manufacture` (`manufacture_id`),
+  CONSTRAINT `fk_prod_mastr_model` FOREIGN KEY (`model_id`) REFERENCES `model` (`model_id`),
+  CONSTRAINT `fk_prod_mastr_sub_cat` FOREIGN KEY (`sub_category_id`) REFERENCES `sub_category` (`sub_category_id`),
+  CONSTRAINT `fk_prod_mastr_unit` FOREIGN KEY (`unit_id`) REFERENCES `units` (`unit_id`),
+  CONSTRAINT `fk_prod_mastr_vendor` FOREIGN KEY (`vendor_id`) REFERENCES `vendor` (`vendor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.product_master: ~0 rows (approximately)
+/*!40000 ALTER TABLE `product_master` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product_master` ENABLE KEYS */;
+
+-- Dumping structure for table keydb.sub_category
+CREATE TABLE IF NOT EXISTS `sub_category` (
+  `sub_category_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `sub_category_name` varchar(50) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`sub_category_id`),
+  KEY `fk_sub_c_cat` (`category_id`),
+  KEY `fk_comp_sub_cat` (`company_id`),
+  CONSTRAINT `fk_comp_sub_cat` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`),
+  CONSTRAINT `fk_sub_c_cat` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.sub_category: ~0 rows (approximately)
+/*!40000 ALTER TABLE `sub_category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sub_category` ENABLE KEYS */;
+
+-- Dumping structure for table keydb.units
+CREATE TABLE IF NOT EXISTS `units` (
+  `unit_id` int(11) NOT NULL,
+  `unit_name` varchar(50) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`unit_id`),
+  KEY `fk_comp_units` (`company_id`),
+  CONSTRAINT `fk_comp_units` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.units: ~0 rows (approximately)
+/*!40000 ALTER TABLE `units` DISABLE KEYS */;
+/*!40000 ALTER TABLE `units` ENABLE KEYS */;
+
 -- Dumping structure for table keydb.user
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `user_id` int(11) NOT NULL,
   `active` int(11) DEFAULT NULL,
-  `email` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `activation_keyword` varchar(50) DEFAULT NULL,
   `lastname` varchar(50) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `audit_insert_date` datetime DEFAULT NULL,
-  `audit_update_date` datetime DEFAULT NULL,
   `company_id` int(11) NOT NULL,
+  `creation_date` datetime DEFAULT NULL,
+  `last_modified_date` datetime DEFAULT NULL,
+  `created_by` varchar(100) DEFAULT NULL,
+  `last_modified_by` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   KEY `fk_comp_u` (`company_id`),
   CONSTRAINT `fk_comp_u` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table keydb.user: ~0 rows (approximately)
+-- Dumping data for table keydb.user: ~2 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`user_id`, `active`, `email`, `activation_keyword`, `lastname`, `firstname`, `password`, `audit_insert_date`, `audit_update_date`, `company_id`) VALUES
-	(2, 1, 'as@as.com', 'rUfbzAjQDMWrkGpS', 'kulhari', 'ashok', '$2a$10$ftZfztB.GtmWQ2LGosF5MOF95GigmxLP1vqV2phdu0V23pvTdkHMi', '2018-09-06 09:23:39', NULL, 1);
+INSERT INTO `user` (`user_id`, `active`, `email`, `activation_keyword`, `lastname`, `firstname`, `password`, `company_id`, `creation_date`, `last_modified_date`, `created_by`, `last_modified_by`) VALUES
+	(6, 1, 'as@as.com', 'bVwLevbhtxeIzcyT', 'kulhari', 'ashok', '$2a$10$t5CmCXPOLHLB4u7YxXQ93etCivqPk3pZiMW.7FcwLCJxwkx25jm3S', 1, '2018-09-23 12:28:38', '2018-09-23 12:44:24', 'anonymousUser', 'as@as.com'),
+	(7, 1, 'as1@as.com', 'eXZBHiNMZGHRFxpu', 'kulhari', 'ashok', '$2a$10$Zhmd4mHcuijGiID9qW.AbOgR1K3QBPrM4gW2sVQp1Ia53FnrdmugG', 1, '2018-09-23 12:45:08', '2018-09-23 14:07:55', 'as@as.com', 'as1@as.com');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.user_group
-DROP TABLE IF EXISTS `user_group`;
 CREATE TABLE IF NOT EXISTS `user_group` (
   `group_group_id` int(11) NOT NULL,
   `user_user_id` int(11) NOT NULL,
@@ -258,11 +542,29 @@ CREATE TABLE IF NOT EXISTS `user_group` (
   CONSTRAINT `fk_user_g` FOREIGN KEY (`user_user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table keydb.user_group: ~0 rows (approximately)
+-- Dumping data for table keydb.user_group: ~2 rows (approximately)
 /*!40000 ALTER TABLE `user_group` DISABLE KEYS */;
 INSERT INTO `user_group` (`group_group_id`, `user_user_id`) VALUES
-	(1, 2);
+	(1, 6),
+	(1, 7);
 /*!40000 ALTER TABLE `user_group` ENABLE KEYS */;
+
+-- Dumping structure for table keydb.vendor
+CREATE TABLE IF NOT EXISTS `vendor` (
+  `vendor_id` int(11) NOT NULL,
+  `vendor_name` varchar(50) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `is_deleted` int(1) DEFAULT NULL,
+  `audit_insert_date` datetime NOT NULL,
+  `audit_update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`vendor_id`),
+  KEY `fk_comp_vend` (`company_id`),
+  CONSTRAINT `fk_comp_vend` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table keydb.vendor: ~0 rows (approximately)
+/*!40000 ALTER TABLE `vendor` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vendor` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

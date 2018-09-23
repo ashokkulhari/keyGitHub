@@ -1,6 +1,5 @@
 package com.key.service;
 
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashSet;
@@ -15,7 +14,6 @@ import com.key.model.User;
 import com.key.repository.CompanyRepository;
 import com.key.repository.GroupRepository;
 import com.key.repository.UserRepository;
-import com.key.util.CommonUtils;
 
 @Service//("userService")
 public class UserServiceImpl implements UserService{
@@ -40,8 +38,6 @@ public class UserServiceImpl implements UserService{
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(NOT_ACTIVATED_USER);
         user.setKeyword(randomWord());
-        Timestamp currentTimestamp = CommonUtils.getCurrentTimestamp();
-        user.setAuditInsertDate(currentTimestamp);
         Group userGroup = groupRepository.findByGroupName("mcomp1AdminGrp");
         user.setGroups(new HashSet<Group>(Arrays.asList(userGroup)));
         user.setCompany(companyRepository.findByCompanyName("company1"));
@@ -78,7 +74,7 @@ public class UserServiceImpl implements UserService{
 	public String extractUsername(String authHeader) {
 		byte[] decodedBytes = Base64.getDecoder().decode(authHeader.split(" ")[1]);
 		String decodedUsername = new String(decodedBytes).split(":")[0];
-		
+		System.out.println("extractUsername ...................."+new String(decodedBytes).split(":"));
 //		String decodedpass = new String(decodedBytes).split(":")[1];
 		
 		return new String(decodedUsername);

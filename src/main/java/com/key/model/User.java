@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,20 +17,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.type.AdaptedImmutableType;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.key.configuration.AuditListener;
+import com.key.configuration.Auditable;
 
+
+//@EntityListeners(AuditListener.class)
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
+public class User extends Auditable<String> implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -60,12 +67,6 @@ public class User implements Serializable {
 	@Column(name = "activation_keyword")
 	private String keyword;
 
-//	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	@Column(name = "audit_insert_date")
-	private Timestamp auditInsertDate;
-
-	@Column(name = "audit_update_date")
-	private Timestamp auditUpdatetDate;
 
 	@JsonIgnore
 	@ManyToOne
@@ -141,21 +142,6 @@ public class User implements Serializable {
 		this.keyword = keyword;
 	}
 
-	public Timestamp getAuditInsertDate() {
-		return auditInsertDate;
-	}
-
-	public void setAuditInsertDate(Timestamp auditInsertDate) {
-		this.auditInsertDate = auditInsertDate;
-	}
-
-	public Timestamp getAuditUpdatetDate() {
-		return auditUpdatetDate;
-	}
-
-	public void setAuditUpdatetDate(Timestamp auditUpdatetDate) {
-		this.auditUpdatetDate = auditUpdatetDate;
-	}
 
 	public Set<Group> getGroups() {
 		return groups;
