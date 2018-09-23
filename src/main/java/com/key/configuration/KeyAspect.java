@@ -4,8 +4,10 @@ import java.util.Arrays;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,20 +32,32 @@ public class KeyAspect {
 //	}
 	
 	@AfterReturning (pointcut="execution (* com.key.service.UserServiceImpl.*(..))",returning ="result")
-	public void afterReturining(JoinPoint joinPoint,Object result){
+	public void userServiceAfterReturining(JoinPoint joinPoint,Object result){
 		LOGGER.debug(CommonUtils.getCurrentTimestamp()+" AfterReturining: "+joinPoint.getSignature().getName()+" Result : "+result);
 	}
 	
 	@Around("execution (* com.key.service.UserServiceImpl.*(..))")
-	  public Object doBasicProfiling(ProceedingJoinPoint pjp) throws Throwable {
-	    // start stopwatch
+	  public Object userServiceProfiling(ProceedingJoinPoint pjp) throws Throwable {
 		LOGGER.debug(CommonUtils.getCurrentTimestamp()+" Before: "+pjp.getSignature().getName() +" Input Args : " +Arrays.toString(pjp.getArgs()));
 		long start = System.currentTimeMillis();
         Object output = pjp.proceed();
-	    // stop stopwatch
         LOGGER.debug(CommonUtils.getCurrentTimestamp()+" After: "+pjp.getSignature().getName());
         long elapsedTime = System.currentTimeMillis() - start;
-        System.out.println("Method execution time: " + elapsedTime + " milliseconds.");
+        LOGGER.debug("Method execution time: " + elapsedTime + " milliseconds.");
         return output;
 	  }
+	
+	
+	 @AfterThrowing (pointcut = "execution(* com.key.service.UserServiceImpl.*(..))", throwing = "ex")
+	 public void userServiceAfterThrowing(JoinPoint joinPoint, Throwable e) {
+		    Signature signature = joinPoint.getSignature();
+		    String methodName = signature.getName();
+		    String stuff = signature.toString();
+		    String arguments = Arrays.toString(joinPoint.getArgs());
+		    LOGGER.debug("Caught exception in method: "
+		        + methodName + " with arguments "
+		        + arguments + "\nand the full toString: " + stuff + "\nthe exception is: "
+		        + e.getMessage(), e);
+		  }
+	 
 }
