@@ -176,8 +176,8 @@ CREATE TABLE IF NOT EXISTS `group_role` (
 /*!40000 ALTER TABLE `group_role` DISABLE KEYS */;
 INSERT INTO `group_role` (`group_group_id`, `role_role_id`) VALUES
 	(1, 1),
-	(2, 2),
 	(3, 3),
+	(2, 4),
 	(4, 4);
 /*!40000 ALTER TABLE `group_role` ENABLE KEYS */;
 
@@ -270,9 +270,9 @@ CREATE TABLE IF NOT EXISTS `k_group` (
   `group_id` int(11) NOT NULL,
   `group_name` varchar(50) NOT NULL,
   `company_id` int(11) NOT NULL,
-  `created_by` varchar(255) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
   `creation_date` datetime DEFAULT NULL,
-  `last_modified_by` varchar(255) DEFAULT NULL,
+  `last_modified_by` int(11) DEFAULT NULL,
   `last_modified_date` datetime DEFAULT NULL,
   PRIMARY KEY (`group_id`),
   KEY `fk_comp_g` (`company_id`),
@@ -420,7 +420,7 @@ CREATE TABLE IF NOT EXISTS `per_set_role` (
 INSERT INTO `per_set_role` (`per_set_per_set_id`, `role_role_id`) VALUES
 	(1, 1),
 	(3, 2),
-	(1, 3),
+	(2, 3),
 	(4, 4);
 /*!40000 ALTER TABLE `per_set_role` ENABLE KEYS */;
 
@@ -530,8 +530,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `company_id` int(11) NOT NULL,
   `creation_date` datetime DEFAULT NULL,
   `last_modified_date` datetime DEFAULT NULL,
-  `created_by` varchar(100) DEFAULT NULL,
-  `last_modified_by` varchar(100) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `last_modified_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   KEY `fk_comp_u` (`company_id`),
   CONSTRAINT `fk_comp_u` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
@@ -540,8 +540,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table keydb.user: ~2 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`user_id`, `active`, `email`, `activation_keyword`, `lastname`, `firstname`, `password`, `company_id`, `creation_date`, `last_modified_date`, `created_by`, `last_modified_by`) VALUES
-	(6, 1, 'as@as.com', 'bVwLevbhtxeIzcyT', 'kulhari', 'ashok', '$2a$10$t5CmCXPOLHLB4u7YxXQ93etCivqPk3pZiMW.7FcwLCJxwkx25jm3S', 1, '2018-09-23 12:28:38', '2018-09-23 12:44:24', 'anonymousUser', 'as@as.com'),
-	(7, 1, 'as1@as.com', 'eXZBHiNMZGHRFxpu', 'kulhari', 'ashok', '$2a$10$Zhmd4mHcuijGiID9qW.AbOgR1K3QBPrM4gW2sVQp1Ia53FnrdmugG', 1, '2018-09-23 12:45:08', '2018-09-23 14:07:55', 'as@as.com', 'as1@as.com');
+	(6, 1, 'as@as.com', 'bVwLevbhtxeIzcyT', 'kulhari', 'ashok', '$2a$10$LhxHfIudVqORjV1NUGc/IenMlcgR25GJO6eNFTBKQmN37dx/VxuhS', 1, '2018-09-23 12:28:38', '2018-09-29 15:43:01', 6, 6),
+	(7, 1, 'as1@as.com', 'eXZBHiNMZGHRFxpu', 'kulhari', 'ashok', '$2a$10$kzKNmxxSFHgym7DZA4VOWuM8pS2nC0u5UcHyQf0BCo.ZsHSaiqtPC', 1, '2018-09-23 12:45:08', '2018-09-24 16:47:41', 7, 7);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.user_group

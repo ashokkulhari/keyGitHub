@@ -3,6 +3,7 @@ package com.key.service;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,6 +108,11 @@ public class UserServiceImpl implements UserService{
 //	@Override
 	public String randomWord() {
 		return RandomStringUtils.randomAlphabetic(16);
+	}
+
+	@Override
+	public List<String> getAuthoritiesByEmail(String email) {
+		return userRepository.getAuthoritiesByEmail(email);
 	}
 
 }

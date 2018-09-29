@@ -28,4 +28,6 @@ public class WebMvcConfig  {
 		driverManagerDataSource.setPassword(environment.getProperty("spring.datasource.password"));
 		return driverManagerDataSource;
 	}
+	
+	
 }

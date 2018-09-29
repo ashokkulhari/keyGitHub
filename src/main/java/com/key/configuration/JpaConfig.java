@@ -11,7 +11,7 @@ import com.key.model.User;
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class JpaConfig {
     @Bean
-    public AuditorAware<String> auditorAware() {
+    public AuditorAware<Integer> auditorAware() {
         return new AuditorAwareImpl();
     }
 }

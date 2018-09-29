@@ -6,19 +6,23 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-public class AuditorAwareImpl implements AuditorAware<String> {
+import com.key.security.CustomUserDetails;
+
+public class AuditorAwareImpl implements AuditorAware<Integer> {
 
 	
 	@Override
-	public Optional<String> getCurrentAuditor() {
+	public Optional<Integer> getCurrentAuditor() {
 		
 //		User user  = ((UserAwareUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getPrincipal().toString());
+		CustomUserDetails userdetails=(CustomUserDetails) authentication.getPrincipal();
+        System.out.println(userdetails.getUserId()+"  getCurrentAuditor "+authentication.getPrincipal().toString() 
+        		+" authorities ="+authentication.getAuthorities());
 		
-		String userEmail = authentication.getName();
+		Long userId = userdetails.getUserId();
         
-        return Optional.of(userEmail);
+        return Optional.of(userId.intValue());
 	}
     
 }

@@ -9,15 +9,30 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import com.key.model.Group;
+import com.key.model.PermissionSet;
+import com.key.model.Role;
 import com.key.model.User;
+import com.key.service.SecurityServices;
 import com.key.service.UserService;
+import com.key.util.ApplicationConstants;
+import com.key.util.CommonUtils;
+
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 public class LoginController {
@@ -26,7 +41,9 @@ public class LoginController {
 	
 	@Autowired
 	private UserService userService;
-
+	@Autowired
+	SecurityServices securityServices;
+	
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -77,23 +94,32 @@ public class LoginController {
 	}
 
 	//Done
-	@RequestMapping(value={"/changepass/"}, method = RequestMethod.PUT)
+	@RequestMapping(value={ApplicationConstants.REQ_CHANGE_PASS_URL}, method = RequestMethod.PUT)
 	public ResponseEntity<?> changePass(@RequestBody User user,
 										@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization,
 										UriComponentsBuilder ucBuilder){
 		LOGGER.info("User change pass : " + user.getName() +"   "+ SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 		Map<String, String> response = new ManagedMap<>();
-
-		if(    !userService.extractUsername(authorization).equals(user.getEmail())
-	        ||	userService.updateUser(user) == null) {
-
+		ResponseEntity<Map<String, String>> entity=null;
+		if(userService.extractUsername(authorization).equals(user.getEmail()) ){
+			User accountUser = userService.findUserByEmail(user.getEmail());
+			CommonUtils.validateUserPermission(accountUser);
+				if(userService.updateUser(user) != null){
+					response.put("msg", "Username " + user.getEmail() + " password updated.");
+					entity= new ResponseEntity<>(response, HttpStatus.CREATED);
+				}else{
+					response.put("msg", "User not found.");
+					entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+				}
+		}else{
 			response.put("msg", "User not found.");
-			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
 
-		response.put("msg", "Username " + user.getEmail() + " password updated.");
-		return new ResponseEntity<>(response, HttpStatus.CREATED);
+		return entity;
 	}
+
+	
 
 	//Done
 	@RequestMapping(value={"/activateuser/"}, method = RequestMethod.GET)
@@ -156,4 +182,7 @@ public class LoginController {
 		response.put("msg","Username " + user.getEmail() + " deleted.");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+	
+	
+	
 }

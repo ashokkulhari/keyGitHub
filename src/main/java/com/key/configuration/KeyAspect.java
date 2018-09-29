@@ -48,7 +48,7 @@ public class KeyAspect {
 	  }
 	
 	
-	 @AfterThrowing (pointcut = "execution(* com.key.service.UserServiceImpl.*(..))", throwing = "ex")
+	 @AfterThrowing (pointcut = "execution(* com.key.service.UserServiceImpl.*(..))", throwing = "e")
 	 public void userServiceAfterThrowing(JoinPoint joinPoint, Throwable e) {
 		    Signature signature = joinPoint.getSignature();
 		    String methodName = signature.getName();

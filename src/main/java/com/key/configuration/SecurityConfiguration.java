@@ -2,7 +2,9 @@ package com.key.configuration;
 
 import com.key.model.AclConfig;
 import com.key.security.CustomBasicAuthenticationEntryPoint;
+import com.key.security.CustomUserDetailsService;
 import com.key.service.SecurityServices;
+import com.key.service.UserService;
 
 import java.util.List;
 
@@ -18,6 +20,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.context.request.RequestContextListener;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -40,15 +44,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	SecurityServices securityServices;
 	
+	@Autowired
+	private  UserService userService;
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
-		auth.
-			jdbcAuthentication()
-				.usersByUsernameQuery(usersQuery)
-				.authoritiesByUsernameQuery(rolesQuery)
-				.dataSource(dataSource)
-				.passwordEncoder(bCryptPasswordEncoder);
+		auth
+        .userDetailsService(new CustomUserDetailsService(userService))
+		.passwordEncoder(bCryptPasswordEncoder);
 	}
 
 	@Override
@@ -93,4 +97,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
 	}
+	
+	@Bean
+    public RequestContextListener requestContextListener() {
+        return new RequestContextListener();
+    }
+	
+	
 }

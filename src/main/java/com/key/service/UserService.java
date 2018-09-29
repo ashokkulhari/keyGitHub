@@ -1,5 +1,7 @@
 package com.key.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.key.model.User;
@@ -18,4 +20,6 @@ public interface UserService {
 	public User activateUser(User user);
 	public User deleteUser(String username);
 	public User resetPass(User user);
+	
+	public List<String> getAuthoritiesByEmail(String email);
 }

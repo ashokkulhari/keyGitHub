@@ -36,7 +36,7 @@ import com.key.configuration.Auditable;
 //@EntityListeners(AuditListener.class)
 @Entity
 @Table(name = "user")
-public class User extends Auditable<String> implements Serializable {
+public class User extends Auditable<Integer> implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
