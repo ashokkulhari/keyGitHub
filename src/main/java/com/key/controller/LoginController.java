@@ -191,8 +191,14 @@ public class LoginController {
 	
 	
 	@RequestMapping(value={"/"}, method = RequestMethod.GET)
-	public String hello(){
-		return "Welcome to Keyserver";
+	public String hello(@RequestParam(value = "input", required=false) String input){
+		
+		if(input!=null && !"".equals(input.trim())){
+			return input;
+		}else{
+			return "Welcome to KeyServer";
+		}
+		
 	}
 	
 }
