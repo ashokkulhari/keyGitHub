@@ -69,7 +69,7 @@ public class LoginController {
 
 	//Done
 	//As we are using Basic auth, login method just verifies is this login:pass valid
-	@RequestMapping(value={"/", "/login/"}, method = RequestMethod.POST)
+	@RequestMapping(value={"/login/"}, method = RequestMethod.POST)
 	public ResponseEntity<?> login(@RequestBody User user, UriComponentsBuilder ucBuilder){
 		LOGGER.info("User login : " + user.getEmail());
 		Map<String, String> response = new ManagedMap<>();
@@ -99,11 +99,12 @@ public class LoginController {
 										@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization,
 										UriComponentsBuilder ucBuilder){
 		LOGGER.info("User change pass : " + user.getName() +"   "+ SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-		Map<String, String> response = new ManagedMap<>();
-		ResponseEntity<Map<String, String>> entity=null;
+		Map<String, Object> response = new ManagedMap<>();
+		ResponseEntity<Map<String, Object>> entity=null;
+		
 		if(userService.extractUsername(authorization).equals(user.getEmail()) ){
 			User accountUser = userService.findUserByEmail(user.getEmail());
-			CommonUtils.validateUserPermission(accountUser);
+			if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_CHANGE_PASS_URL) ){
 				if(userService.updateUser(user) != null){
 					response.put("msg", "Username " + user.getEmail() + " password updated.");
 					entity= new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -111,6 +112,11 @@ public class LoginController {
 					response.put("msg", "User not found.");
 					entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 				}
+			}else{
+				response.put("msg", "User does not have permission..");
+				entity=new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+			}
+				
 		}else{
 			response.put("msg", "User not found.");
 			entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -184,5 +190,9 @@ public class LoginController {
 	}
 	
 	
+	@RequestMapping(value={"/"}, method = RequestMethod.GET)
+	public String hello(){
+		return "Welcome to Keyserver";
+	}
 	
 }
