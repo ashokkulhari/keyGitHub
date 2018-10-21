@@ -22,7 +22,7 @@ import com.key.configuration.Auditable;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="acl_id")
-	private int aclId;
+	private Integer aclId;
 	
 	@Column(name="page")
 	private String page;
@@ -30,6 +30,10 @@ import com.key.configuration.Auditable;
 	private String path;
 	@Column(name="type")
 	private String type;
+	
+	@Column(name="min_permission")
+	private Integer minPermission;
+	
 	@ManyToOne
 	@JoinColumn(name="authority_id")
 	private Authority authority;
@@ -63,6 +67,15 @@ import com.key.configuration.Auditable;
 	}
 	public void setAuthority(Authority authority) {
 		this.authority = authority;
+	}
+	public Integer getMinPermission() {
+		return minPermission;
+	}
+	public void setMinPermission(Integer minPermission) {
+		this.minPermission = minPermission;
+	}
+	public void setAclId(Integer aclId) {
+		this.aclId = aclId;
 	}
 
 }

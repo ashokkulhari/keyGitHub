@@ -23,7 +23,7 @@ public class Permission extends Auditable<String> implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="permission_id")
-	private int permissionId;
+	private Integer permissionId;
 	
 	@Column(name="permission_name")
 	private String permissionName;
@@ -31,11 +31,11 @@ public class Permission extends Auditable<String> implements Serializable {
 	@OneToMany(mappedBy="permission", fetch=FetchType.EAGER)
 	private Set<PermissionSet> permissionSet;
 
-	public int getPermissionId() {
+	public Integer getPermissionId() {
 		return permissionId;
 	}
 
-	public void setPermissionId(int permissionId) {
+	public void setPermissionId(Integer permissionId) {
 		this.permissionId = permissionId;
 	}
 
