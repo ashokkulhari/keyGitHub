@@ -24,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Map;
 
 @RestController
+@CrossOrigin
 public class LoginController {
 
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
