@@ -1,14 +1,9 @@
 package com.key.model;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,18 +12,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
 
-import org.hibernate.annotations.Type;
-import org.hibernate.type.AdaptedImmutableType;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.key.configuration.AuditListener;
 import com.key.configuration.Auditable;
 
@@ -36,7 +28,8 @@ import com.key.configuration.Auditable;
 //@EntityListeners(AuditListener.class)
 @Entity
 @Table(name = "user")
-public class User extends Auditable<Integer> implements Serializable {
+@JsonIgnoreProperties({"user_id" , "firstname","lastname","active","activation_keyword","company_id"})
+public class User extends Auditable<Integer>  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

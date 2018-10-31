@@ -24,7 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin
 public class LoginController {
 
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
@@ -60,8 +60,10 @@ public class LoginController {
 	//Done
 	//As we are using Basic auth, login method just verifies is this login:pass valid
 	@RequestMapping(value={"/login/"}, method = RequestMethod.POST)
+	
 	public ResponseEntity<?> login(@RequestBody User user, UriComponentsBuilder ucBuilder){
-		LOGGER.info("User login : " + user.getEmail());
+		LOGGER.info("...................User login : " + user.getEmail());
+		System.out.println("...login called...");
 		Map<String, String> response = new ManagedMap<>();
 
 		User account = userService.findUserByEmail(user.getEmail());
@@ -80,6 +82,7 @@ public class LoginController {
 
 		response.put("msg", "Login successful.");
 		response.put("userfullname", account.getName());
+		System.out.println("...login end...");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 

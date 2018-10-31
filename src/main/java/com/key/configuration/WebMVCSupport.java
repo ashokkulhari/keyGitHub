@@ -17,8 +17,10 @@ public class WebMVCSupport implements WebMvcConfigurer {
       registry.addInterceptor(verifyAccessInterceptor).addPathPatterns("/**");
   }
   
-  @Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**");
-	}
+//  @Override
+//	public void addCorsMappings(CorsRegistry registry) {
+//	  registry.addMapping("/**")
+//      .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH");
+//	}
+  
 }
