@@ -63,7 +63,6 @@ public class LoginController {
 	
 	public ResponseEntity<?> login(@RequestBody User user, UriComponentsBuilder ucBuilder){
 		LOGGER.info("...................User login : " + user.getEmail());
-		System.out.println("...login called...");
 		Map<String, String> response = new ManagedMap<>();
 
 		User account = userService.findUserByEmail(user.getEmail());
@@ -82,7 +81,6 @@ public class LoginController {
 
 		response.put("msg", "Login successful.");
 		response.put("userfullname", account.getName());
-		System.out.println("...login end...");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
