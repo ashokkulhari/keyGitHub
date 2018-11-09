@@ -10,4 +10,6 @@ import com.key.model.Category;
 public interface CategoryService {
 
 	public List<Category> getAllCategory();
+	
+	public Category findById(Integer id);
 }

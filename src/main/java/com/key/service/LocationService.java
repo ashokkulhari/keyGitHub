@@ -9,4 +9,5 @@ import com.key.model.Location;
 public interface LocationService {
 
 	public List<Location> getAllLocation();
+	public Location findById(Integer id);
 }

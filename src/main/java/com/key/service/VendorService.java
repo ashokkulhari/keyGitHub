@@ -9,4 +9,5 @@ import com.key.model.Vendor;
 public interface VendorService {
 
 	public List<Vendor> getAllVendor();
+	public Vendor findById(Integer id);
 }

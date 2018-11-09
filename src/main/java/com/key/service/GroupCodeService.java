@@ -9,5 +9,5 @@ import com.key.model.GroupCode;
 public interface GroupCodeService {
 
 	public List<GroupCode> getAllGroupCode();
-	
+	public GroupCode findById(Integer id);
 }

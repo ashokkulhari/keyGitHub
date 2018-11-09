@@ -9,4 +9,5 @@ import com.key.model.Invoice;
 public interface InvoiceService {
 
 	public List<Invoice> getAllInvoice();
+	public Invoice findById(Integer id);
 }

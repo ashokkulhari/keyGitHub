@@ -18,4 +18,9 @@ public class GroupCodeServiceImpl implements GroupCodeService{
 		return groupCodeRepository.findAll();
 	}
 
+	@Override
+	public GroupCode findById(Integer id) {
+		return groupCodeRepository.getOne(id);
+	}
+
 }

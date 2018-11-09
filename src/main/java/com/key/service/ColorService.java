@@ -9,5 +9,5 @@ import com.key.model.Color;
 public interface ColorService {
 
 	public List<Color> getAllColor();
-	
+	public Color findById(Integer id);
 }

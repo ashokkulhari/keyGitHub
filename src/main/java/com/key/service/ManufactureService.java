@@ -9,4 +9,5 @@ import com.key.model.Manufacture;
 public interface ManufactureService {
 
 	public List<Manufacture> getAllManufacture();
+	public Manufacture findById(Integer id);
 }

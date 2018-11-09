@@ -18,4 +18,10 @@ public class ColorServiceImpl implements ColorService {
 		return colorRepository.findAll();
 	}
 
+	@Override
+	public Color findById(Integer id) {
+		System.out.println(" Color findById id = "+id);
+		return colorRepository.getOne(id);
+	}
+
 }

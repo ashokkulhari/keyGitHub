@@ -11,10 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.key.model.Category;
 import com.key.model.Color;
@@ -26,12 +28,14 @@ import com.key.model.Location;
 import com.key.model.Manufacture;
 import com.key.model.Model;
 import com.key.model.ProductMaster;
+import com.key.model.ProductMasterModel;
 import com.key.model.SubCategory;
 import com.key.model.Unit;
 import com.key.model.User;
 import com.key.model.Vendor;
 import com.key.service.CategoryService;
 import com.key.service.ColorService;
+import com.key.service.CompanyService;
 import com.key.service.CustomerService;
 import com.key.service.GroupCodeService;
 import com.key.service.InvoiceDetailService;
@@ -58,6 +62,9 @@ public class ProductController {
 	
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private CompanyService companyService;
 	
 	@Autowired
 	private ColorService colorService;
@@ -92,6 +99,20 @@ public class ProductController {
 	@Autowired
 	private ProductMasterService productMasterService;
 	
+	
+	@RequestMapping(value={"/getpp"}, method = RequestMethod.GET)
+	public ResponseEntity<?> getpp(){
+		
+		
+		ResponseEntity<ProductMasterModel> entity=null;
+		
+		ProductMasterModel pp = new ProductMasterModel();
+				entity=new ResponseEntity<>(pp, HttpStatus.OK);
+			
+		
+		return entity;
+	}
+	
 	@RequestMapping(value={ApplicationConstants.REQ_GET_PRODUCT_BYID_URL}, method = RequestMethod.GET)
 	public ResponseEntity<?> getProduct(@PathVariable("id") int id,
 			@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization){
@@ -117,6 +138,84 @@ public class ProductController {
 			}
 		
 		return entity;
+	}
+	
+	@RequestMapping(value={ApplicationConstants.REQ_POST_PRODUCT_SAVE_URL}, method = RequestMethod.POST)
+	public ResponseEntity<?> saveProduct(@RequestBody ProductMasterModel productMasterModel,
+			@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization, UriComponentsBuilder ucBuilder){
+		
+		
+		Map<String, Object> response = new ManagedMap<>();
+		ResponseEntity<Map<String, Object>> entity=null;
+		
+			User accountUser = userService.findUserByEmail(userService.extractUsername(authorization));
+			if(accountUser!=null){
+				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_POST_PRODUCT_SAVE_URL) ){
+					
+					ProductMaster product = setProductMasterEntity(productMasterModel);
+					
+					product =productMasterService.saveProductMaster(product);
+					System.out.println("product ==== "+product);
+					response.put("output", product);
+					entity= new ResponseEntity<>(response, HttpStatus.OK);
+				}else{
+					response.put("msg", "User does not have permission..");
+					entity=new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+				}
+			}else{
+				response.put("msg", "User not found.");
+				entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			}
+		
+		return entity;
+	}
+
+	public ProductMaster setProductMasterEntity(ProductMasterModel productMasterModel) {
+		ProductMaster product = new ProductMaster();
+		
+		product.setActPurCost(productMasterModel.getActPurCost());
+		
+		product.setCategory(categoryService.findById(productMasterModel.getCategoryId()));
+		product.setColor(colorService.findById(productMasterModel.getColorId()));
+		product.setCompany(companyService.findById(productMasterModel.getCompanyId()));
+		product.setDangerLevel(productMasterModel.getDangerLevel());
+		product.setEanCodeType(productMasterModel.getEanCodeType());
+		product.setGroupCode(groupCodeService.findById(productMasterModel.getGroupCodeId()));
+//					product.setInvoiceDetails(productMasterModel.getInvoiceDetails());
+//					product.setIsActive(isActive);
+		product.setIsAssetItem(productMasterModel.getIsAssetItem());
+		product.setIsCancelled(productMasterModel.getIsCancelled());
+//					product.setIsDeleted(isDeleted);
+		product.setIsFocAllowed(productMasterModel.getIsFocAllowed());
+		product.setIsIncludePromotion(productMasterModel.getIsIncludePromotion());
+		product.setIsWorkItem(productMasterModel.getIsWorkItem());
+		product.setItemAvgCost(productMasterModel.getItemAvgCost());
+		product.setItemBarCode(productMasterModel.getItemBarCode());
+		product.setItemCategorySno(productMasterModel.getItemCategorySno());
+		product.setItemCode(productMasterModel.getItemCode());
+		product.setItemDiscount(productMasterModel.getItemDiscount());
+		product.setItemLocationName(productMasterModel.getItemLocationName());
+		product.setItemMinSellPrice(productMasterModel.getItemMinSellPrice());
+		product.setItemName(productMasterModel.getItemName());
+		product.setItemSellPrice(productMasterModel.getItemSellPrice());
+		product.setItemShopCost(productMasterModel.getItemShopCost());
+		product.setItemTenderPrice(productMasterModel.getItemTenderPrice());
+		product.setItemWSalePrice(productMasterModel.getItemWSalePrice());
+		product.setLocation(locationService.findById(productMasterModel.getLocationId()));
+		product.setMadeinId(productMasterModel.getMadeinId());
+		product.setManufacture(manufactureService.findById(productMasterModel.getManufactureId()));
+		product.setMaxLevel(productMasterModel.getMaxLevel());
+		product.setMinLevel(productMasterModel.getMinLevel());
+		product.setModel(modelService.findById(productMasterModel.getModelId()));
+		
+		product.setPriceCode(productMasterModel.getPriceCode());
+		product.setPurchaseUnit(unitService.findById(productMasterModel.getPurchaseUnitId()));
+		product.setReoRderLevel(productMasterModel.getReoRderLevel());
+		product.setSalesUnit(unitService.findById(productMasterModel.getSalesUnitId()));
+		product.setSubCategory(subCategoryService.findById(productMasterModel.getSubCategoryId()));
+		product.setUnit(unitService.findById(productMasterModel.getUnitId()));
+		product.setVendor(vendorService.findById(productMasterModel.getVendorId()));
+		return product;
 	}
 	
 	@RequestMapping(value={ApplicationConstants.REQ_GET_CATEGORY_URL}, method = RequestMethod.GET)

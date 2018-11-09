@@ -6,6 +6,8 @@ public class ApplicationConstants {
 	
 	public final static String REQ_GET_PRODUCT_BYID_URL="/getproduct/{id}";
 	
+	public final static String REQ_POST_PRODUCT_SAVE_URL="/saveproduct";
+	
 	public final static String REQ_GET_CATEGORY_URL="/getcategory";
 	
 	public final static String REQ_GET_COLOR_URL="/getcolor";

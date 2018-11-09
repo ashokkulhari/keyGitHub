@@ -9,5 +9,5 @@ import com.key.model.Customer;
 public interface CustomerService {
 
 	public List<Customer> getAllCustomer();
-	
+	public Customer findById(Integer id);
 }

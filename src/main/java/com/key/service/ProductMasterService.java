@@ -8,4 +8,6 @@ public interface ProductMasterService {
 
 	
 	ProductMaster getProductMasterById(int id);
+	
+	ProductMaster saveProductMaster(ProductMaster productMaster);
 }

@@ -18,4 +18,9 @@ public class ModelServiceImpl implements ModelService {
 		return modelRepository.findAll();
 	}
 
+	@Override
+	public Model findById(Integer id) {
+		return modelRepository.getOne(id);
+	}
+
 }

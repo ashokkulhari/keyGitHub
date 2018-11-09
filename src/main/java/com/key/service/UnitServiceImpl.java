@@ -18,4 +18,9 @@ public class UnitServiceImpl implements UnitService {
 		return unitRepository.findAll();
 	}
 
+	@Override
+	public Unit findById(Integer id) {
+		return unitRepository.getOne(id);
+	}
+
 }

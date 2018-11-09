@@ -8,6 +8,7 @@ import java.util.Set;
 import com.key.model.AclConfig;
 import com.key.model.Group;
 import com.key.model.PermissionSet;
+import com.key.model.ProductMaster;
 import com.key.model.Role;
 import com.key.model.User;
 
@@ -70,4 +71,10 @@ public class CommonUtils {
 		
 		return isValidPermission;
 	}
+	
+//	public static ProductMaster getProductMaster(ProductMasterModel){
+//		
+//		
+//		return null;
+//	}
 }

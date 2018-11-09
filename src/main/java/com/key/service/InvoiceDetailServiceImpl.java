@@ -19,4 +19,10 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
 		return invoiceDetailRepository.findAll();
 	}
 
+
+	@Override
+	public InvoiceDetail findById(Integer id) {
+		return invoiceDetailRepository.getOne(id);
+	}
+
 }

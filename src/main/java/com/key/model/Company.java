@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,37 +34,37 @@ public class Company extends Auditable<String> implements Serializable{
 	@Column(name="is_deleted")
 	private Boolean isDeleted;
 	
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Category> categories;
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Color> colors;
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Customer> customers;
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<GroupCode> groupCodes;
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Invoice> invoices;
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<InvoiceDetail> invoiceDetails;
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Location> locations;
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Manufacture> manufactures;
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Model> models;
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProductMaster> productMasters;
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Unit> units;
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Vendor> vendors;
 	
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<User> users;
 		
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Group> groups;
-	@OneToMany(mappedBy="company", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Role> roles;
 	public Integer getCompanyId() {
 		return companyId;

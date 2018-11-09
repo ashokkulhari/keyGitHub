@@ -9,5 +9,5 @@ import com.key.model.InvoiceDetail;
 public interface InvoiceDetailService {
 
 	public List<InvoiceDetail> getAllInvoiceDetail();
-	
+	public InvoiceDetail findById(Integer id);
 }

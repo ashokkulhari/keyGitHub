@@ -8,4 +8,5 @@ import com.key.model.SubCategory;
 @Service
 public interface SubCategoryService {
 	public List<SubCategory> getAllSubCategory();
+	public SubCategory findById(Integer id);
 }

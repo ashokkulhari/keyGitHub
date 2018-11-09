@@ -16,4 +16,9 @@ public class ProductMasterServiceImpl implements ProductMasterService {
 	public ProductMaster getProductMasterById(int id) {
 		return productMasterRepository.getOne(id);
 	}
+
+	@Override
+	public ProductMaster saveProductMaster(ProductMaster productMaster) {
+		return productMasterRepository.save(productMaster);
+	}
 }

@@ -9,4 +9,5 @@ import com.key.model.Model;
 public interface ModelService {
 
 	public List<Model> getAllModel();
+	public Model findById(Integer id);
 }

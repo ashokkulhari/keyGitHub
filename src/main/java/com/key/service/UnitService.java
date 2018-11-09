@@ -8,4 +8,5 @@ import com.key.model.Unit;
 @Service
 public interface UnitService {
 	public List<Unit> getAllUnit();
+	public Unit findById(Integer id);
 }

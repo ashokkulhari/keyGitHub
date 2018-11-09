@@ -18,4 +18,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 		return invoiceRepository.findAll();
 	}
 
+	@Override
+	public Invoice findById(Integer id) {
+		return invoiceRepository.getOne(id);
+	}
+
 }

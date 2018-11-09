@@ -18,4 +18,9 @@ public class ManufactureServiceImpl implements ManufactureService{
 		return manufactureRepository.findAll();
 	}
 
+	@Override
+	public Manufacture findById(Integer id) {
+		return manufactureRepository.getOne(id);
+	}
+
 }
