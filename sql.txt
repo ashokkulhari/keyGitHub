@@ -51,7 +51,8 @@ INSERT INTO `acl_config` (`acl_id`, `authority_id`, `type`, `page`, `path`, `cre
 	(13, 3, 'has_authority', 'getmodel', '/getmodel', NULL, NULL, NULL, NULL, 1),
 	(14, 3, 'has_authority', 'getsubcategory', '/getsubcategory', NULL, NULL, NULL, NULL, 1),
 	(15, 3, 'has_authority', 'getunit', '/getunit', NULL, NULL, NULL, NULL, 1),
-	(16, 3, 'has_authority', 'getvendor', '/getvendor', NULL, NULL, NULL, NULL, 1);
+	(16, 3, 'has_authority', 'getvendor', '/getvendor', NULL, NULL, NULL, NULL, 1),
+	(17, 3, 'has_authority', 'saveproduct', '/saveproduct', NULL, NULL, NULL, NULL, 1);
 /*!40000 ALTER TABLE `acl_config` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.authority
@@ -192,6 +193,8 @@ CREATE TABLE IF NOT EXISTS `group_code` (
 
 -- Dumping data for table keydb.group_code: ~0 rows (approximately)
 /*!40000 ALTER TABLE `group_code` DISABLE KEYS */;
+INSERT INTO `group_code` (`group_code_id`, `group_code_name`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `is_active`) VALUES
+	(1, 'dsfsdds', 1, NULL, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `group_code` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.group_role
@@ -221,14 +224,14 @@ CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
 -- Dumping data for table keydb.hibernate_sequence: 8 rows
 /*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
 INSERT INTO `hibernate_sequence` (`next_val`) VALUES
-	(8),
-	(8),
-	(8),
-	(8),
-	(8),
-	(8),
-	(8),
-	(8);
+	(30),
+	(30),
+	(30),
+	(30),
+	(30),
+	(30),
+	(30),
+	(30);
 /*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.invoice
@@ -263,6 +266,8 @@ CREATE TABLE IF NOT EXISTS `invoice` (
 
 -- Dumping data for table keydb.invoice: ~0 rows (approximately)
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
+INSERT INTO `invoice` (`invoice_id`, `customer_id`, `address`, `attention`, `tele_phone`, `invoice_no`, `sr_no`, `invoice_date`, `lpo_number`, `lpo_date`, `cust_ref`, `user_id`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `is_active`) VALUES
+	(1, 1, NULL, NULL, NULL, '11', NULL, '2018-11-08 21:56:27', '22', '2018-11-08 21:57:04', 'dsf', 7, 1, NULL, NULL, '2018-11-08 21:56:33', NULL, '2018-11-08 21:56:41', NULL);
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.invoice_details
@@ -366,6 +371,8 @@ CREATE TABLE IF NOT EXISTS `location` (
 
 -- Dumping data for table keydb.location: ~0 rows (approximately)
 /*!40000 ALTER TABLE `location` DISABLE KEYS */;
+INSERT INTO `location` (`location_id`, `location_name`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `is_active`) VALUES
+	(1, 'dsfs', 1, NULL, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `location` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.manufacture
@@ -387,6 +394,8 @@ CREATE TABLE IF NOT EXISTS `manufacture` (
 
 -- Dumping data for table keydb.manufacture: ~0 rows (approximately)
 /*!40000 ALTER TABLE `manufacture` DISABLE KEYS */;
+INSERT INTO `manufacture` (`manufacture_id`, `manufacture_name`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `is_active`, `manufacture_code`) VALUES
+	(1, 'sdfsd', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `manufacture` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.model
@@ -407,6 +416,8 @@ CREATE TABLE IF NOT EXISTS `model` (
 
 -- Dumping data for table keydb.model: ~0 rows (approximately)
 /*!40000 ALTER TABLE `model` DISABLE KEYS */;
+INSERT INTO `model` (`model_id`, `model_name`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `is_active`) VALUES
+	(1, 'dsfsdf', 1, NULL, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `model` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.permission
@@ -545,10 +556,22 @@ CREATE TABLE IF NOT EXISTS `product_master` (
   CONSTRAINT `fk_prod_mastr_vendor` FOREIGN KEY (`vendor_id`) REFERENCES `vendor` (`vendor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table keydb.product_master: ~1 rows (approximately)
+-- Dumping data for table keydb.product_master: ~5 rows (approximately)
 /*!40000 ALTER TABLE `product_master` DISABLE KEYS */;
 INSERT INTO `product_master` (`item_id`, `item_code`, `item_name`, `item_bar_code`, `item_location_name`, `unit_id`, `item_cost`, `item_avg_cost`, `item_shop_cost`, `item_sell_price`, `item_tender_price`, `item_min_sell_price`, `item_w_sale_price`, `item_discount`, `sub_category_id`, `group_code_id`, `model_id`, `madein_id`, `color_id`, `vendor_id`, `location_id`, `manufacture_id`, `reo_rder_level`, `max_level`, `min_level`, `danger_level`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `item_category_sno`, `ean_code_type`, `is_active`, `is_asset_item`, `is_cancelled`, `is_foc_allowed`, `is_include_promotion`, `is_work_item`, `category_id`, `purchase_unit_id`, `sale_unit_id`, `act_pur_cost`, `price_code`) VALUES
-	(1, '22', 'fdg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+	(1, '22', 'fdg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(18, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 17:49:40', 6, '2018-11-09 17:49:40', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
+	(19, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 17:52:07', 6, '2018-11-09 17:52:07', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
+	(20, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:06:45', 6, '2018-11-09 18:06:45', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
+	(21, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:10:28', 6, '2018-11-09 18:10:28', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
+	(22, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:56:11', 6, '2018-11-09 18:56:11', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
+	(23, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:58:46', 6, '2018-11-09 18:58:46', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
+	(24, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:59:54', 6, '2018-11-09 18:59:54', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
+	(25, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:07:53', 6, '2018-11-09 19:07:53', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
+	(26, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:09:17', 6, '2018-11-09 19:09:17', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
+	(27, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:10:59', 6, '2018-11-09 19:10:59', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
+	(28, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:12:33', 6, '2018-11-09 19:12:33', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
+	(29, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:18:47', 6, '2018-11-09 19:18:47', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2);
 /*!40000 ALTER TABLE `product_master` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.sub_category
@@ -572,6 +595,8 @@ CREATE TABLE IF NOT EXISTS `sub_category` (
 
 -- Dumping data for table keydb.sub_category: ~0 rows (approximately)
 /*!40000 ALTER TABLE `sub_category` DISABLE KEYS */;
+INSERT INTO `sub_category` (`sub_category_id`, `category_id`, `sub_category_name`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `is_active`) VALUES
+	(1, 1, 'fgddfg', 1, NULL, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `sub_category` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.units
@@ -590,8 +615,12 @@ CREATE TABLE IF NOT EXISTS `units` (
   CONSTRAINT `fk_comp_units` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table keydb.units: ~0 rows (approximately)
+-- Dumping data for table keydb.units: ~2 rows (approximately)
 /*!40000 ALTER TABLE `units` DISABLE KEYS */;
+INSERT INTO `units` (`unit_id`, `unit_name`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `is_active`) VALUES
+	(1, 'unit', 1, NULL, NULL, NULL, NULL, NULL, NULL),
+	(2, 'salesunit', 1, NULL, NULL, NULL, NULL, NULL, NULL),
+	(3, 'purunit', 1, NULL, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `units` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.user
@@ -643,8 +672,6 @@ CREATE TABLE IF NOT EXISTS `vendor` (
   `vendor_name` varchar(50) NOT NULL,
   `company_id` int(11) NOT NULL,
   `is_deleted` int(1) DEFAULT NULL,
-  `audit_insert_date` datetime NOT NULL,
-  `audit_update_date` datetime DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `creation_date` datetime DEFAULT NULL,
   `last_modified_by` int(11) DEFAULT NULL,
@@ -664,6 +691,8 @@ CREATE TABLE IF NOT EXISTS `vendor` (
 
 -- Dumping data for table keydb.vendor: ~0 rows (approximately)
 /*!40000 ALTER TABLE `vendor` DISABLE KEYS */;
+INSERT INTO `vendor` (`vendor_id`, `vendor_name`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `is_active`, `vendor_address`, `vendor_city_id`, `vendor_contact_number`, `vendor_country_id`, `vendor_email`, `vendor_state_id`, `vendor_website`) VALUES
+	(1, 'fdgdfg', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `vendor` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
