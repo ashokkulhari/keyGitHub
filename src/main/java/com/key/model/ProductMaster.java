@@ -97,7 +97,7 @@ public class ProductMaster extends Auditable<Integer> implements Serializable {
 	@OneToMany(mappedBy="productMaster", fetch=FetchType.EAGER)
 	private Set<InvoiceDetail> invoiceDetails;
 	//bi-directional many-to-one association to Color
-//	@JsonBackReference
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="color_id")
 	private Color color;
