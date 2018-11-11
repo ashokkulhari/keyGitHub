@@ -43,11 +43,12 @@ public class Invoice extends Auditable<Integer> implements Serializable {
 	@JoinColumn(name="company_id")
 	private Company company;
 	//bi-directional many-to-one association to Customer
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="customer_id")
 	private Customer customer;
 	//bi-directional many-to-one association to InvoiceDetail
-	@OneToMany(mappedBy="invoice", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="invoice",cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	private Set<InvoiceDetail> invoiceDetails;
 	public Integer getInvoiceId() {
 		return invoiceId;

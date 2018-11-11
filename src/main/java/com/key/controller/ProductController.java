@@ -75,11 +75,7 @@ public class ProductController {
 	@Autowired
 	private GroupCodeService groupCodeService;
 	
-	@Autowired
-	private InvoiceDetailService invoiceDetailService;
 	
-	@Autowired
-	private InvoiceService invoiceService;
 	
 	@Autowired
 	private LocationService locationService;
@@ -104,9 +100,9 @@ public class ProductController {
 	public ResponseEntity<?> getpp(){
 		
 		
-		ResponseEntity<ProductMasterModel> entity=null;
+		ResponseEntity<InvoiceDetail> entity=null;
 		
-		ProductMasterModel pp = new ProductMasterModel();
+		InvoiceDetail pp = new InvoiceDetail();
 				entity=new ResponseEntity<>(pp, HttpStatus.OK);
 			
 		
@@ -324,57 +320,7 @@ public class ProductController {
 		return entity;
 	}
 	
-	@RequestMapping(value={ApplicationConstants.REQ_GET_INVOICE_DETAIL_URL}, method = RequestMethod.GET)
-	public ResponseEntity<?> getAllInvoiceDetail(@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization){
-		
-		
-		Map<String, Object> response = new ManagedMap<>();
-		ResponseEntity<Map<String, Object>> entity=null;
-		
-			User accountUser = userService.findUserByEmail(userService.extractUsername(authorization));
-			if(accountUser!=null){
-				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_GET_INVOICE_DETAIL_URL) ){
-					List<InvoiceDetail> invoiceDetails =invoiceDetailService.getAllInvoiceDetail();
-					System.out.println("invoiceDetails ==== "+invoiceDetails);
-					response.put("output", invoiceDetails);
-					entity= new ResponseEntity<>(response, HttpStatus.OK);
-				}else{
-					response.put("msg", "User does not have permission..");
-					entity=new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-				}
-			}else{
-				response.put("msg", "User not found.");
-				entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-			}
-		
-		return entity;
-	}
-	
-	@RequestMapping(value={ApplicationConstants.REQ_GET_INVOICE_URL}, method = RequestMethod.GET)
-	public ResponseEntity<?> getAllInvoice(@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization){
-		
-		
-		Map<String, Object> response = new ManagedMap<>();
-		ResponseEntity<Map<String, Object>> entity=null;
-		
-			User accountUser = userService.findUserByEmail(userService.extractUsername(authorization));
-			if(accountUser!=null){
-				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_GET_INVOICE_URL) ){
-					List<Invoice> invoices =invoiceService.getAllInvoice();
-					System.out.println("invoices ==== "+invoices);
-					response.put("output", invoices);
-					entity= new ResponseEntity<>(response, HttpStatus.OK);
-				}else{
-					response.put("msg", "User does not have permission..");
-					entity=new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-				}
-			}else{
-				response.put("msg", "User not found.");
-				entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-			}
-		
-		return entity;
-	}
+
 	
 	@RequestMapping(value={ApplicationConstants.REQ_GET_LOCATION_URL}, method = RequestMethod.GET)
 	public ResponseEntity<?> getAllLocation(@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization){

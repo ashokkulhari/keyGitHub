@@ -10,4 +10,5 @@ public interface InvoiceService {
 
 	public List<Invoice> getAllInvoice();
 	public Invoice findById(Integer id);
+	Invoice saveInvoice(Invoice invoice);
 }

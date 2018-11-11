@@ -50,14 +50,17 @@ public class InvoiceDetail extends Auditable<Integer> implements Serializable {
 	@JoinColumn(name="company_id")
 	private Company company;
 	//bi-directional many-to-one association to Invoice
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="invoice_id")
 	private Invoice invoice;
 	//bi-directional many-to-one association to ProductMaster
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="item_id")
 	private ProductMaster productMaster;
 	//bi-directional many-to-one association to Unit
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="unit_id")
 	private Unit unit;

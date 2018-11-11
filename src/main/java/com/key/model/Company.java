@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.key.configuration.Auditable;
 
 
@@ -42,8 +44,10 @@ public class Company extends Auditable<String> implements Serializable{
 	private Set<Customer> customers;
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<GroupCode> groupCodes;
+	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Invoice> invoices;
+	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<InvoiceDetail> invoiceDetails;
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)

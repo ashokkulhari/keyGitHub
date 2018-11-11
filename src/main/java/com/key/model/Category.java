@@ -29,7 +29,8 @@ public class Category extends Auditable<Integer> implements Serializable {
 	
 
 	//bi-directional many-to-one association to SubCategory
-	@OneToMany(mappedBy="category", fetch=FetchType.EAGER)
+	@JsonIgnore
+	@OneToMany(mappedBy="category",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<SubCategory> subCategories;
 
 

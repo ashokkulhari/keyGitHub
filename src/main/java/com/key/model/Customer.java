@@ -56,7 +56,8 @@ public class Customer extends Auditable<Integer> implements Serializable {
 	@JoinColumn(name="category_id")
 	private Category category;
 	//bi-directional many-to-one association to Invoice
-	@OneToMany(mappedBy="customer", fetch=FetchType.EAGER)
+	@JsonIgnore
+	@OneToMany(mappedBy="customer",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Invoice> invoices;
 	public Integer getCustomerId() {
 		return customerId;

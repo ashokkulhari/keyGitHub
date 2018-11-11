@@ -32,5 +32,5 @@ public class ApplicationConstants {
 	
 	public final static String REQ_GET_VENDOR_URL="/getvendor";
 	
-	
+	public final static String REQ_POST_INVOICE_SAVE_URL="/saveinvoice";
 }
