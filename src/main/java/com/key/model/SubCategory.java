@@ -26,7 +26,7 @@ public class SubCategory extends Auditable<Integer> implements Serializable {
 	private String subCategoryName;
 	//bi-directional many-to-one association to ProductMaster
 	@JsonIgnore
-	@OneToMany(mappedBy="subCategory", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="subCategory",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProductMaster> productMasters;
 	//bi-directional many-to-one association to Category
 	@JsonIgnore

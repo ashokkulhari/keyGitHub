@@ -30,7 +30,7 @@ public class Model extends Auditable<Integer> implements Serializable {
 	@JoinColumn(name="company_id")
 	private Company company;
 	//bi-directional many-to-one association to ProductMaster
-	@OneToMany(mappedBy="model", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="model",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProductMaster> productMasters;
 	public Integer getModelId() {
 		return modelId;

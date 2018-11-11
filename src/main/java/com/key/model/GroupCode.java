@@ -32,7 +32,8 @@ public class GroupCode extends Auditable<Integer> implements Serializable {
 	private Company company;
 	
 	//bi-directional many-to-one association to ProductMaster
-	@OneToMany(mappedBy="groupCode", fetch=FetchType.EAGER)
+	@JsonIgnore
+	@OneToMany(mappedBy="groupCode",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProductMaster> productMasters;
 
 	public Integer getGroupCodeId() {
