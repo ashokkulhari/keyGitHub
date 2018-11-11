@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -123,6 +124,71 @@ public class ProductController {
 					ProductMaster product =productMasterService.getProductMasterById(id);;
 					System.out.println("product ==== "+product);
 					response.put("output", product);
+					entity= new ResponseEntity<>(response, HttpStatus.OK);
+				}else{
+					response.put("msg", "User does not have permission..");
+					entity=new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+				}
+			}else{
+				response.put("msg", "User not found.");
+				entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value={ApplicationConstants.REQ_GET_PRODUCT_BYICODE_OR_NAME_URL}, method = RequestMethod.GET)
+	public ResponseEntity<?> getProductByItems(@RequestParam(name ="itemCode" , required = false) String itemCode,
+			@RequestParam(name ="itemName" , required = false) String itemName,
+			@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization){
+		
+		
+		Map<String, Object> response = new ManagedMap<>();
+		ResponseEntity<Map<String, Object>> entity=null;
+		
+			User accountUser = userService.findUserByEmail(userService.extractUsername(authorization));
+			if(accountUser!=null){
+				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_GET_PRODUCT_BYICODE_OR_NAME_URL) ){
+					List<ProductMaster> products=null;
+					if(itemCode!=null && !"".equals(itemCode.trim()) && itemName!=null && !"".equals(itemName.trim())){
+						products =productMasterService.findByItemNameAndItemCode(itemName, itemCode);
+					}else if(itemCode!=null && !"".equals(itemCode.trim())){
+						products =productMasterService.findByItemCode(itemCode);
+					}
+					else if(itemName!=null && !"".equals(itemName.trim())){
+						products =productMasterService.findByItemName(itemName);
+					}
+					System.out.println("product ==== "+products);
+					response.put("output", products);
+					entity= new ResponseEntity<>(response, HttpStatus.OK);
+				}else{
+					response.put("msg", "User does not have permission..");
+					entity=new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+				}
+			}else{
+				response.put("msg", "User not found.");
+				entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value={ApplicationConstants.REQ_GET_PRODUCT_BY_GR_CODE_URL}, method = RequestMethod.GET)
+	public ResponseEntity<?> getProductByGroupCode(@RequestParam(name ="groupCode" , required = false) Integer groupCode,
+			@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization){
+		
+		
+		Map<String, Object> response = new ManagedMap<>();
+		ResponseEntity<Map<String, Object>> entity=null;
+		
+			User accountUser = userService.findUserByEmail(userService.extractUsername(authorization));
+			if(accountUser!=null){
+				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_GET_PRODUCT_BY_GR_CODE_URL) ){
+					List<ProductMaster> products=null;
+						products =productMasterService.findByGroupCode(groupCode);
+					
+					System.out.println("product ==== "+products);
+					response.put("output", products);
 					entity= new ResponseEntity<>(response, HttpStatus.OK);
 				}else{
 					response.put("msg", "User does not have permission..");
