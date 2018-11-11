@@ -3,6 +3,7 @@ package com.key.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.key.configuration.Auditable;
 
 import java.util.Set;
@@ -27,6 +28,7 @@ public class SubCategory extends Auditable<Integer> implements Serializable {
 	@OneToMany(mappedBy="subCategory", fetch=FetchType.EAGER)
 	private Set<ProductMaster> productMasters;
 	//bi-directional many-to-one association to Category
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="category_id")
 	private Category category;
