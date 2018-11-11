@@ -33,6 +33,7 @@ public class Manufacture extends Auditable<Integer> implements Serializable {
 	@JoinColumn(name="company_id")
 	private Company company;
 	//bi-directional many-to-one association to ProductMaster
+	@JsonIgnore
 	@OneToMany(mappedBy="manufacture",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProductMaster> productMasters;
 	public Integer getManufactureId() {

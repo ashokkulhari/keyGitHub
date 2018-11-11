@@ -55,6 +55,7 @@ public class Vendor extends Auditable<Integer> implements Serializable {
 	private Company company;
 	
 	//bi-directional many-to-one association to ProductMaster
+	@JsonIgnore
 	@OneToMany(mappedBy="vendor",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProductMaster> productMasters;
 

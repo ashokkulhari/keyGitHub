@@ -34,7 +34,7 @@ public class Color extends Auditable<Integer> implements Serializable {
 	//bi-directional many-to-one association to ProductMaster
 	@JsonManagedReference
 	@JsonIgnore
-	@OneToMany(mappedBy="color",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="color",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProductMaster> productMasters;
 	public Integer getColorId() {
 		return colorId;

@@ -52,6 +52,7 @@ public class Customer extends Auditable<Integer> implements Serializable {
 	private String phone;
 	@Column(name="remarks")
 	private String remarks;
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="category_id")
 	private Category category;

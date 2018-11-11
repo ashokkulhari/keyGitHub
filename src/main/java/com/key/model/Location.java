@@ -29,6 +29,7 @@ public class Location extends Auditable<Integer> implements Serializable {
 	@JoinColumn(name="company_id")
 	private Company company;
 	//bi-directional many-to-one association to ProductMaster
+	@JsonIgnore
 	@OneToMany(mappedBy="location",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProductMaster> productMasters;
 	public Integer getLocationId() {
