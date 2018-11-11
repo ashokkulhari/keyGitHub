@@ -30,7 +30,7 @@ public class Group extends Auditable<String> implements Serializable {
 	private String groupName;
 	
 	
-	
+	@JsonIgnore
 	@ManyToMany(mappedBy="groups", fetch=FetchType.EAGER)
 	private Set<User> users;
 	
@@ -38,7 +38,7 @@ public class Group extends Auditable<String> implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="company_id")
 	private Company company;
-	
+	@JsonIgnore
 	@ManyToMany(mappedBy="Groups", fetch=FetchType.EAGER)
 	private Set<Role> roles;
 

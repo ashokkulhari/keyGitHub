@@ -32,7 +32,7 @@ public class Color extends Auditable<Integer> implements Serializable {
 	@JoinColumn(name="company_id")
 	private Company company;
 	//bi-directional many-to-one association to ProductMaster
-	@JsonManagedReference
+//	@JsonManagedReference
 	@JsonIgnore
 	@OneToMany(mappedBy="color",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProductMaster> productMasters;

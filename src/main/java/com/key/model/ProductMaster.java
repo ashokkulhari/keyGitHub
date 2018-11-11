@@ -89,7 +89,6 @@ public class ProductMaster extends Auditable<Integer> implements Serializable {
 	// active
 	@Column(name="is_active",nullable = true)
 	private Boolean isActive;
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="company_id")
 	private Company company;
@@ -97,55 +96,45 @@ public class ProductMaster extends Auditable<Integer> implements Serializable {
 	@OneToMany(mappedBy="productMaster", fetch=FetchType.EAGER)
 	private Set<InvoiceDetail> invoiceDetails;
 	//bi-directional many-to-one association to Color
-	@JsonBackReference
+//	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="color_id")
 	private Color color;
 	//bi-directional many-to-one association to GroupCode
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="group_code_id")
 	private GroupCode groupCode;
 	//bi-directional many-to-one association to Location
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="location_id")
 	private Location location;
 	//bi-directional many-to-one association to Manufacture
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="manufacture_id")
 	private Manufacture manufacture;
 	//bi-directional many-to-one association to Model
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="model_id")
 	private Model model;
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="category_id")
 	private Category category;
 	
 	//bi-directional many-to-one association to SubCategory
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="sub_category_id")
 	private SubCategory subCategory;
 	//bi-directional many-to-one association to Unit
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="unit_id")
 	private Unit unit;
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="sale_unit_id")
 	private Unit salesUnit;
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="purchase_unit_id")
 	private Unit purchaseUnit;
 	//bi-directional many-to-one association to Vendor
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="vendor_id")
 	private Vendor vendor;

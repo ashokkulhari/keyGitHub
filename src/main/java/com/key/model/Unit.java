@@ -36,6 +36,7 @@ public class Unit extends Auditable<Integer> implements Serializable {
 	@OneToMany(mappedBy="unit",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<InvoiceDetail> invoiceDetails;
 	//bi-directional many-to-one association to ProductMaster
+	@JsonIgnore
 	@OneToMany(mappedBy="unit",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProductMaster> productMasters;
 	public Integer getUnitId() {

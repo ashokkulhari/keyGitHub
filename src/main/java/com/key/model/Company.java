@@ -35,13 +35,16 @@ public class Company extends Auditable<String> implements Serializable{
 	
 	@Column(name="is_deleted")
 	private Boolean isDeleted;
-	
+	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Category> categories;
+	@JsonIgnore
 	@OneToMany(mappedBy="company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Color> colors;
+	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Customer> customers;
+	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<GroupCode> groupCodes;
 	@JsonIgnore
@@ -50,24 +53,30 @@ public class Company extends Auditable<String> implements Serializable{
 	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<InvoiceDetail> invoiceDetails;
+	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Location> locations;
+	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Manufacture> manufactures;
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Model> models;
+	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<ProductMaster> productMasters;
+	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Unit> units;
+	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Vendor> vendors;
-	
+	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<User> users;
-		
+	@JsonIgnore	
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Group> groups;
+	@JsonIgnore
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Role> roles;
 	public Integer getCompanyId() {
