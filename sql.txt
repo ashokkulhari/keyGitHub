@@ -52,7 +52,13 @@ INSERT INTO `acl_config` (`acl_id`, `authority_id`, `type`, `page`, `path`, `cre
 	(14, 3, 'has_authority', 'getsubcategory', '/getsubcategory', NULL, NULL, NULL, NULL, 1),
 	(15, 3, 'has_authority', 'getunit', '/getunit', NULL, NULL, NULL, NULL, 1),
 	(16, 3, 'has_authority', 'getvendor', '/getvendor', NULL, NULL, NULL, NULL, 1),
-	(17, 3, 'has_authority', 'saveproduct', '/saveproduct', NULL, NULL, NULL, NULL, 1);
+	(17, 3, 'has_authority', 'saveproduct', '/saveproduct', NULL, NULL, NULL, NULL, 1),
+	(18, 3, 'has_authority', 'getproductbyicode', '/getproductbyicode', NULL, NULL, NULL, NULL, 1),
+	(19, 3, 'has_authority', 'getproductbygrcode', '/getproductbygrcode', NULL, NULL, NULL, NULL, 1),
+	(20, 3, 'has_authority', 'getproductbyiname', '/getproductbyiname', NULL, NULL, NULL, NULL, 1),
+	(21, 3, 'has_authority', 'getproductbycat', '/getproductbycat', NULL, NULL, NULL, NULL, 1),
+	(22, 3, 'has_authority', 'getproductbymanuf', '/getproductbymanuf', NULL, NULL, NULL, NULL, 1),
+	(23, 3, 'has_authority', 'getproductbyvendor', '/getproductbyvendor', NULL, NULL, NULL, NULL, 1);
 /*!40000 ALTER TABLE `acl_config` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.authority
@@ -305,6 +311,8 @@ CREATE TABLE IF NOT EXISTS `invoice_details` (
 
 -- Dumping data for table keydb.invoice_details: ~0 rows (approximately)
 /*!40000 ALTER TABLE `invoice_details` DISABLE KEYS */;
+INSERT INTO `invoice_details` (`invoice_id`, `invoice_line_id`, `item_id`, `unit_id`, `unit_price`, `qty`, `landig_cost`, `sell_price`, `discount_per`, `discount`, `total`, `units_in_stock`, `discontiued`, `date_of_expiry`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`) VALUES
+	(1, 11, 18, 1, 22, 2, 33, 44, 2, 3, 5, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `invoice_details` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.k_group
@@ -556,7 +564,7 @@ CREATE TABLE IF NOT EXISTS `product_master` (
   CONSTRAINT `fk_prod_mastr_vendor` FOREIGN KEY (`vendor_id`) REFERENCES `vendor` (`vendor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table keydb.product_master: ~5 rows (approximately)
+-- Dumping data for table keydb.product_master: ~12 rows (approximately)
 /*!40000 ALTER TABLE `product_master` DISABLE KEYS */;
 INSERT INTO `product_master` (`item_id`, `item_code`, `item_name`, `item_bar_code`, `item_location_name`, `unit_id`, `item_cost`, `item_avg_cost`, `item_shop_cost`, `item_sell_price`, `item_tender_price`, `item_min_sell_price`, `item_w_sale_price`, `item_discount`, `sub_category_id`, `group_code_id`, `model_id`, `madein_id`, `color_id`, `vendor_id`, `location_id`, `manufacture_id`, `reo_rder_level`, `max_level`, `min_level`, `danger_level`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `item_category_sno`, `ean_code_type`, `is_active`, `is_asset_item`, `is_cancelled`, `is_foc_allowed`, `is_include_promotion`, `is_work_item`, `category_id`, `purchase_unit_id`, `sale_unit_id`, `act_pur_cost`, `price_code`) VALUES
 	(1, '22', 'fdg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),

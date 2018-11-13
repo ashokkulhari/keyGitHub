@@ -15,6 +15,12 @@ public interface ProductMasterService {
 	
 	List<ProductMaster> findByItemCode(String itemCode);
 	List<ProductMaster> findByItemName(String itemName);
-	List<ProductMaster> findByItemNameAndItemCode(String itemName,String itemCode);
+	List<ProductMaster> matchByItemName(String itemName);
 	List<ProductMaster> findByGroupCode(Integer group_code_id);
+	
+	List<ProductMaster> findByCategory(Integer categoryId);
+	
+	List<ProductMaster> findByManufacture(Integer manufactureId);
+	
+	List<ProductMaster> findByVendor(Integer vendorId);
 }

@@ -6,9 +6,17 @@ public class ApplicationConstants {
 	
 	public final static String REQ_GET_PRODUCT_BYID_URL="/getproduct/{id}";
 	
-	public final static String REQ_GET_PRODUCT_BYICODE_OR_NAME_URL="/getproductbycode_or_name";
+	public final static String REQ_GET_PRODUCT_BYICODE_URL="/getproductbyicode";
+	
+	public final static String REQ_GET_PRODUCT_BYI_NAME_URL="/getproductbyiname";
 	
 	public final static String REQ_GET_PRODUCT_BY_GR_CODE_URL="/getproductbygrcode";
+	
+	public final static String REQ_GET_PRODUCT_BY_CAT_URL="/getproductbycat";
+	
+	public final static String REQ_GET_PRODUCT_BY_MANF_URL="/getproductbymanuf";
+	
+	public final static String REQ_GET_PRODUCT_BY_VENDOR_URL="/getproductbyvendor";
 	
 	public final static String REQ_POST_PRODUCT_SAVE_URL="/saveproduct";
 	

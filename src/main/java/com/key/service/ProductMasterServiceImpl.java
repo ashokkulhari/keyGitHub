@@ -35,12 +35,27 @@ public class ProductMasterServiceImpl implements ProductMasterService {
 	}
 
 	@Override
-	public List<ProductMaster> findByItemNameAndItemCode(String itemName, String itemCode) {
-		return productMasterRepository.findByItemNameAndItemCode(itemName, itemCode);
+	public List<ProductMaster> matchByItemName(String itemName) {
+		return productMasterRepository.matchByItemName(itemName);
 	}
 
 	@Override
 	public List<ProductMaster> findByGroupCode(Integer group_code_id) {
 		return productMasterRepository.findByGroupCode(group_code_id);
+	}
+
+	@Override
+	public List<ProductMaster> findByCategory(Integer categoryId) {
+		return productMasterRepository.findByCategory(categoryId);
+	}
+
+	@Override
+	public List<ProductMaster> findByManufacture(Integer manufactureId) {
+		return productMasterRepository.findByManufacture(manufactureId);
+	}
+
+	@Override
+	public List<ProductMaster> findByVendor(Integer vendorId) {
+		return productMasterRepository.findByVendor(vendorId);
 	}
 }

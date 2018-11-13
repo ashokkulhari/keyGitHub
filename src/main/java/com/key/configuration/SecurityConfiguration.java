@@ -63,7 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		List<AclConfig> configs =securityServices.findAll();
-		System.out.println("configs = "+configs);
+//		System.out.println("configs = "+configs);
 		
 
 		http.csrf().disable()
@@ -79,7 +79,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //				.antMatchers("/account/**").hasAuthority("ROLE_ADMIN")
 				.and().httpBasic().realmName(REALM).authenticationEntryPoint(getBasicAuthEntryPoint());
 		for (int i = 0; i < configs.size(); i++) {
-			System.out.println("configs = "+configs.get(i).getPath()+" values "+configs.get(i).getAuthority().getAuthorityName());
+//			System.out.println("configs = "+configs.get(i).getPath()+" values "+configs.get(i).getAuthority().getAuthorityName());
 			http.authorizeRequests().antMatchers(configs.get(i).getPath()).hasAnyAuthority(configs.get(i).getAuthority().getAuthorityName());
 		}
 		
