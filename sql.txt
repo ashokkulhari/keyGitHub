@@ -165,8 +165,11 @@ CREATE TABLE IF NOT EXISTS `country` (
   CONSTRAINT `fk_comp_country` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table keydb.country: ~0 rows (approximately)
+-- Dumping data for table keydb.country: ~2 rows (approximately)
 /*!40000 ALTER TABLE `country` DISABLE KEYS */;
+INSERT INTO `country` (`country_id`, `country_code`, `country_name`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `is_active`) VALUES
+	(1, 'IN', 'INDIA', 1, NULL, NULL, NULL, NULL, NULL, NULL),
+	(2, 'USA', 'United State', 1, NULL, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `country` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.customer
@@ -221,8 +224,11 @@ CREATE TABLE IF NOT EXISTS `eantype` (
   CONSTRAINT `fk_comp_eantype` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table keydb.eantype: ~0 rows (approximately)
+-- Dumping data for table keydb.eantype: ~2 rows (approximately)
 /*!40000 ALTER TABLE `eantype` DISABLE KEYS */;
+INSERT INTO `eantype` (`eantype_id`, `eantype_code`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `is_active`) VALUES
+	(1, 'E001', 1, NULL, NULL, NULL, NULL, NULL, NULL),
+	(2, 'E002', 1, NULL, NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `eantype` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.group_code
