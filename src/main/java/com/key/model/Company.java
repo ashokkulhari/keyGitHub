@@ -39,6 +39,12 @@ public class Company extends Auditable<String> implements Serializable{
 	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Category> categories;
 	@JsonIgnore
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<EANType> eanTypes;
+	@JsonIgnore
+	@OneToMany(mappedBy="company",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<Country> countries;
+	@JsonIgnore
 	@OneToMany(mappedBy="company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Color> colors;
 	@JsonIgnore

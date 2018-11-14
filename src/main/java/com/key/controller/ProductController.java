@@ -21,7 +21,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.key.model.Category;
 import com.key.model.Color;
+import com.key.model.Country;
 import com.key.model.Customer;
+import com.key.model.EANType;
 import com.key.model.GroupCode;
 import com.key.model.InvoiceDetail;
 import com.key.model.Location;
@@ -36,7 +38,9 @@ import com.key.model.Vendor;
 import com.key.service.CategoryService;
 import com.key.service.ColorService;
 import com.key.service.CompanyService;
+import com.key.service.CountryService;
 import com.key.service.CustomerService;
+import com.key.service.EANTypeService;
 import com.key.service.GroupCodeService;
 import com.key.service.LocationService;
 import com.key.service.ManufactureService;
@@ -73,7 +77,10 @@ public class ProductController {
 	@Autowired
 	private GroupCodeService groupCodeService;
 	
-	
+	@Autowired
+	private EANTypeService eanTypeService;
+	@Autowired
+	private CountryService countryService;
 	
 	@Autowired
 	private LocationService locationService;
@@ -343,8 +350,8 @@ public class ProductController {
 			User accountUser = userService.findUserByEmail(userService.extractUsername(authorization));
 			if(accountUser!=null){
 				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_POST_PRODUCT_SAVE_URL) ){
-					
-					ProductMaster product = setProductMasterEntity(productMasterModel);
+					ProductMaster product= new ProductMaster();
+					product = setProductMasterEntity(productMasterModel,product);
 					
 					product =productMasterService.saveProductMaster(product);
 					System.out.println("product ==== "+product);
@@ -362,9 +369,47 @@ public class ProductController {
 		
 		return entity;
 	}
+	
+	@RequestMapping(value={ApplicationConstants.REQ_POST_PRODUCT_UPDATE_URL}, method = RequestMethod.PUT)
+	public ResponseEntity<?> updateProduct(@PathVariable("id") int id,@RequestBody ProductMasterModel productMasterModel,
+			@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization,
+			UriComponentsBuilder ucBuilder){
+		
+		
+		Map<String, Object> response = new ManagedMap<>();
+		ResponseEntity<Map<String, Object>> entity=null;
+		
+			User accountUser = userService.findUserByEmail(userService.extractUsername(authorization));
+			if(accountUser!=null){
+				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_POST_PRODUCT_UPDATE_URL) ){
+					
+					ProductMaster product= productMasterService.getProductMasterById(id);
+					if(product!=null){
+						product = setProductMasterEntity(productMasterModel,product);
+						
+						product =productMasterService.saveProductMaster(product);
+						System.out.println("product ==== "+product);
+						response.put("output", product);
+						response.put("msg", "Success");
+						entity= new ResponseEntity<>(response, HttpStatus.OK);
+					}else{
+						response.put("msg", "Input missing");
+						entity=new ResponseEntity<>(response, HttpStatus.FAILED_DEPENDENCY);
+					}
+					
+				}else{
+					response.put("msg", "User does not have permission..");
+					entity=new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+				}
+			}else{
+				response.put("msg", "User not found.");
+				entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			}
+		
+		return entity;
+	}
 
-	public ProductMaster setProductMasterEntity(ProductMasterModel productMasterModel) {
-		ProductMaster product = new ProductMaster();
+	public ProductMaster setProductMasterEntity(ProductMasterModel productMasterModel,ProductMaster product) {
 		
 		product.setActPurCost(productMasterModel.getActPurCost());
 		
@@ -409,6 +454,58 @@ public class ProductController {
 		product.setUnit(unitService.findById(productMasterModel.getUnitId()));
 		product.setVendor(vendorService.findById(productMasterModel.getVendorId()));
 		return product;
+	}
+	
+	@RequestMapping(value={ApplicationConstants.REQ_GET_EAN_TYPE_URL}, method = RequestMethod.GET)
+	public ResponseEntity<?> getEANType(@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization){
+		
+		
+		Map<String, Object> response = new ManagedMap<>();
+		ResponseEntity<Map<String, Object>> entity=null;
+		
+			User accountUser = userService.findUserByEmail(userService.extractUsername(authorization));
+			if(accountUser!=null){
+				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_GET_EAN_TYPE_URL) ){
+					List<EANType> eanTypes =eanTypeService.getEANType();
+					System.out.println("eanTypes ==== "+eanTypes);
+					response.put("output", eanTypes);
+					entity= new ResponseEntity<>(response, HttpStatus.OK);
+				}else{
+					response.put("msg", "User does not have permission..");
+					entity=new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+				}
+			}else{
+				response.put("msg", "User not found.");
+				entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value={ApplicationConstants.REQ_GET_COUNTRY_URL}, method = RequestMethod.GET)
+	public ResponseEntity<?> getCountry(@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization){
+		
+		
+		Map<String, Object> response = new ManagedMap<>();
+		ResponseEntity<Map<String, Object>> entity=null;
+		
+			User accountUser = userService.findUserByEmail(userService.extractUsername(authorization));
+			if(accountUser!=null){
+				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_GET_COUNTRY_URL) ){
+					List<Country> countries =countryService.getCountry();
+					System.out.println("countries ==== "+countries);
+					response.put("output", countries);
+					entity= new ResponseEntity<>(response, HttpStatus.OK);
+				}else{
+					response.put("msg", "User does not have permission..");
+					entity=new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+				}
+			}else{
+				response.put("msg", "User not found.");
+				entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			}
+		
+		return entity;
 	}
 	
 	@RequestMapping(value={ApplicationConstants.REQ_GET_CATEGORY_URL}, method = RequestMethod.GET)

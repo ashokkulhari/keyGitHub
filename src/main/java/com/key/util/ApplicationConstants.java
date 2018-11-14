@@ -45,4 +45,8 @@ public class ApplicationConstants {
 	public final static String REQ_GET_VENDOR_URL="/getvendor";
 	
 	public final static String REQ_POST_INVOICE_SAVE_URL="/saveinvoice";
+	
+	public final static String REQ_GET_EAN_TYPE_URL="/eantype";
+	public final static String REQ_GET_COUNTRY_URL="/country";
+	public final static String REQ_POST_PRODUCT_UPDATE_URL="/updateproduct/{id}";
 }
