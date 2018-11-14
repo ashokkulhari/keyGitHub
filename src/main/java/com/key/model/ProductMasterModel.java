@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class ProductMasterModel {
 
-	
+	private Integer productId;
 	private Double dangerLevel;
 	private Boolean isDeleted;
 	private Double itemAvgCost;
@@ -49,6 +49,14 @@ public class ProductMasterModel {
 	private Integer salesUnitId;
 	private Integer purchaseUnitId;
 	private Integer vendorId;
+	
+	
+	public Integer getProductId() {
+		return productId;
+	}
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
 	public Double getDangerLevel() {
 		return dangerLevel;
 	}

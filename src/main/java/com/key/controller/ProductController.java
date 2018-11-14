@@ -1,5 +1,6 @@
 package com.key.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -114,20 +115,15 @@ public class ProductController {
 		return entity;
 	}
 	
-	@RequestMapping(value={ApplicationConstants.REQ_GET_PRODUCT_BYID_URL}, method = RequestMethod.GET)
-	public ResponseEntity<?> getProduct(@PathVariable("id") int id,
+	@RequestMapping(value={ApplicationConstants.REQ_GET_PRODUCT_URL,ApplicationConstants.REQ_GET_PRODUCT_BYID_URL}, method = RequestMethod.GET)
+	public ResponseEntity<?> getProduct(@PathVariable(name="id", required = false) Integer id,
 			@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization){
-		
-		
 		Map<String, Object> response = new ManagedMap<>();
 		ResponseEntity<Map<String, Object>> entity=null;
-		
 			User accountUser = userService.findUserByEmail(userService.extractUsername(authorization));
 			if(accountUser!=null){
-				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_GET_PRODUCT_BYID_URL) ){
-					ProductMaster product =productMasterService.getProductMasterById(id);;
-					System.out.println("product ==== "+product);
-					response.put("output", product);
+				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_GET_PRODUCT_URL) ){
+					processGetProducts(id, response);
 					response.put("msg", "Success");
 					entity= new ResponseEntity<>(response, HttpStatus.OK);
 				}else{
@@ -140,6 +136,38 @@ public class ProductController {
 			}
 		
 		return entity;
+	}
+
+	public void processGetProducts(Integer id, Map<String, Object> response) {
+		ProductMaster product=null;
+		List<ProductMaster> products=null;
+		if(id!=null){
+			product =productMasterService.getProductMasterById(id);;
+			System.out.println("product ==== "+product);
+			maskProduct(response, product);
+		}else{
+			products =productMasterService.getAllProductMaster();;
+			System.out.println("products ==== "+products);
+			maskProducts(response, products);
+		}
+	}
+
+	public void maskProduct(Map<String, Object> response, ProductMaster product) {
+		ProductMasterModel productMasterModel= new ProductMasterModel();
+		productMasterModel =setProductMasterModel(productMasterModel,product);
+		response.put("output", productMasterModel);
+	}
+
+	public void maskProducts(Map<String, Object> response, List<ProductMaster> products) {
+		ProductMaster product;
+		List<ProductMasterModel> productMasterModels= new ArrayList<>();
+		for (int i = 0; i < products.size(); i++) {
+			product = products.get(i);
+			ProductMasterModel productMasterModel= new ProductMasterModel();
+			productMasterModel =setProductMasterModel(productMasterModel,product);
+			productMasterModels.add(productMasterModel);
+		}
+		response.put("output", productMasterModels);
 	}
 	
 	@RequestMapping(value={ApplicationConstants.REQ_GET_PRODUCT_BYICODE_URL}, method = RequestMethod.GET)
@@ -156,8 +184,7 @@ public class ProductController {
 					List<ProductMaster> products=null;
 					if(itemCode!=null && !"".equals(itemCode.trim())){
 						products =productMasterService.findByItemCode(itemCode);
-						System.out.println("product ==== "+products);
-						response.put("output", products);
+						maskProducts(response, products);
 						response.put("msg", "Success");
 						entity= new ResponseEntity<>(response, HttpStatus.OK);
 					}
@@ -198,8 +225,7 @@ public class ProductController {
 							products =productMasterService.findByItemName(itemName);	
 						}
 						
-						System.out.println("product ==== "+products);
-						response.put("output", products);
+						maskProducts(response, products);
 						response.put("msg", "Success");
 						entity= new ResponseEntity<>(response, HttpStatus.OK);
 					}else {
@@ -231,10 +257,8 @@ public class ProductController {
 			if(accountUser!=null){
 				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_GET_PRODUCT_BY_GR_CODE_URL) ){
 					List<ProductMaster> products=null;
-						products =productMasterService.findByGroupCode(groupCode);
-					
-					System.out.println("product ==== "+products);
-					response.put("output", products);
+					products =productMasterService.findByGroupCode(groupCode);
+					maskProducts(response, products);
 					response.put("msg", "Success");
 					entity= new ResponseEntity<>(response, HttpStatus.OK);
 				}else{
@@ -263,8 +287,7 @@ public class ProductController {
 					List<ProductMaster> products=null;
 						products =productMasterService.findByCategory(categoryId);
 					
-					System.out.println("product ==== "+products);
-					response.put("output", products);
+						maskProducts(response, products);
 					response.put("msg", "Success");
 					entity= new ResponseEntity<>(response, HttpStatus.OK);
 				}else{
@@ -293,8 +316,7 @@ public class ProductController {
 					List<ProductMaster> products=null;
 						products =productMasterService.findByManufacture(manufactureId);
 					
-					System.out.println("product ==== "+products);
-					response.put("output", products);
+						maskProducts(response, products);
 					response.put("msg", "Success");
 					entity= new ResponseEntity<>(response, HttpStatus.OK);
 				}else{
@@ -323,8 +345,7 @@ public class ProductController {
 					List<ProductMaster> products=null;
 						products =productMasterService.findByVendor(vendorId);
 					
-					System.out.println("product ==== "+products);
-					response.put("output", products);
+						maskProducts(response, products);
 					response.put("msg", "Success");
 					entity= new ResponseEntity<>(response, HttpStatus.OK);
 				}else{
@@ -354,8 +375,7 @@ public class ProductController {
 					product = setProductMasterEntity(productMasterModel,product);
 					
 					product =productMasterService.saveProductMaster(product);
-					System.out.println("product ==== "+product);
-					response.put("output", product);
+					maskProduct(response, product);
 					response.put("msg", "Success");
 					entity= new ResponseEntity<>(response, HttpStatus.OK);
 				}else{
@@ -454,6 +474,83 @@ public class ProductController {
 		product.setUnit(unitService.findById(productMasterModel.getUnitId()));
 		product.setVendor(vendorService.findById(productMasterModel.getVendorId()));
 		return product;
+	}
+	
+	public ProductMasterModel setProductMasterModel(ProductMasterModel productMasterModel,ProductMaster product) {
+		
+		productMasterModel.setProductId(product.getItemId());
+		
+		productMasterModel.setActPurCost(product.getActPurCost());
+		
+		
+		productMasterModel.setActPurCost(product.getActPurCost());
+		if(product.getCategory()!=null){
+			productMasterModel.setCategoryId(product.getCategory().getCategoryId());
+		}
+		
+		if(product.getColor()!=null){
+			productMasterModel.setColorId(product.getColor().getColorId());
+		}
+	
+		if(product.getCompany()!=null){
+			productMasterModel.setCompanyId(product.getCompany().getCompanyId());
+		}
+		
+		productMasterModel.setDangerLevel(product.getDangerLevel());
+		product.setEanCodeType(product.getEanCodeType());
+		if(product.getGroupCode()!=null){
+			productMasterModel.setGroupCodeId(product.getGroupCode().getGroupCodeId());
+		}
+//					product.setInvoiceDetails(productMasterModel.getInvoiceDetails());
+//					product.setIsActive(isActive);
+		productMasterModel.setIsAssetItem(product.getIsAssetItem());
+		productMasterModel.setIsCancelled(product.getIsCancelled());
+//					product.setIsDeleted(isDeleted);
+		productMasterModel.setIsFocAllowed(product.getIsFocAllowed());
+		productMasterModel.setIsIncludePromotion(product.getIsIncludePromotion());
+		productMasterModel.setIsWorkItem(product.getIsWorkItem());
+		productMasterModel.setItemAvgCost(product.getItemAvgCost());
+		productMasterModel.setItemBarCode(product.getItemBarCode());
+		productMasterModel.setItemCategorySno(product.getItemCategorySno());
+		productMasterModel.setItemCode(product.getItemCode());
+		productMasterModel.setItemDiscount(product.getItemDiscount());
+		productMasterModel.setItemLocationName(product.getItemLocationName());
+		productMasterModel.setItemMinSellPrice(product.getItemMinSellPrice());
+		productMasterModel.setItemName(product.getItemName());
+		productMasterModel.setItemSellPrice(product.getItemSellPrice());
+		productMasterModel.setItemShopCost(product.getItemShopCost());
+		productMasterModel.setItemTenderPrice(product.getItemTenderPrice());
+		productMasterModel.setItemWSalePrice(product.getItemWSalePrice());
+		if(product.getLocation()!=null){
+			productMasterModel.setLocationId(product.getLocation().getLocationId());
+		}
+		productMasterModel.setMadeinId(product.getMadeinId());
+		if(product.getManufacture()!=null){
+			productMasterModel.setManufactureId(product.getManufacture().getManufactureId());
+		}
+		productMasterModel.setMaxLevel(product.getMaxLevel());
+		productMasterModel.setMinLevel(product.getMinLevel());
+		if(product.getModel()!=null){
+			productMasterModel.setModelId(product.getModel().getModelId());
+		}
+		productMasterModel.setPriceCode(product.getPriceCode());
+		if(product.getPurchaseUnit()!=null){
+			productMasterModel.setPurchaseUnitId(product.getPurchaseUnit().getUnitId());
+		}
+		productMasterModel.setReoRderLevel(product.getReoRderLevel());
+		if(product.getSalesUnit()!=null){
+			productMasterModel.setSalesUnitId(product.getSalesUnit().getUnitId());
+		}
+		if(product.getSubCategory()!=null){
+			productMasterModel.setSubCategoryId(product.getSubCategory().getSubCategoryId());
+		}
+		if(product.getUnit()!=null){
+			productMasterModel.setUnitId(product.getUnit().getUnitId());
+		}
+		if(product.getVendor()!=null){
+			productMasterModel.setVendorId(product.getVendor().getVendorId());
+		}
+		return productMasterModel;
 	}
 	
 	@RequestMapping(value={ApplicationConstants.REQ_GET_EAN_TYPE_URL}, method = RequestMethod.GET)

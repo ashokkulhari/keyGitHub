@@ -58,4 +58,9 @@ public class ProductMasterServiceImpl implements ProductMasterService {
 	public List<ProductMaster> findByVendor(Integer vendorId) {
 		return productMasterRepository.findByVendor(vendorId);
 	}
+
+	@Override
+	public List<ProductMaster> getAllProductMaster() {
+		return productMasterRepository.findAll();
+	}
 }

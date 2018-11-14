@@ -11,6 +11,8 @@ public interface ProductMasterService {
 	
 	ProductMaster getProductMasterById(int id);
 	
+	List<ProductMaster> getAllProductMaster();
+	
 	ProductMaster saveProductMaster(ProductMaster productMaster);
 	
 	List<ProductMaster> findByItemCode(String itemCode);
