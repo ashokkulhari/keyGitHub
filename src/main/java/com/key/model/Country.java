@@ -23,9 +23,9 @@ public class Country extends Auditable<Integer> implements Serializable{
 	@Column(name="country_id")
 	private Integer countryId;
 	@Column(name="country_code")
-	private Integer countryCode;
+	private String countryCode;
 	@Column(name="country_name")
-	private Integer countryName;
+	private String countryName;
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="company_id")
@@ -38,16 +38,16 @@ public class Country extends Auditable<Integer> implements Serializable{
 	public void setCountryId(Integer countryId) {
 		this.countryId = countryId;
 	}
-	public Integer getCountryCode() {
+	public String getCountryCode() {
 		return countryCode;
 	}
-	public void setCountryCode(Integer countryCode) {
+	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
 	}
-	public Integer getCountryName() {
+	public String getCountryName() {
 		return countryName;
 	}
-	public void setCountryName(Integer countryName) {
+	public void setCountryName(String countryName) {
 		this.countryName = countryName;
 	}
 	public Company getCompany() {
@@ -62,5 +62,7 @@ public class Country extends Auditable<Integer> implements Serializable{
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
+	
+
 	
 }

@@ -24,7 +24,7 @@ public class EANType extends Auditable<Integer> implements Serializable{
 	@Column(name="eantype_id")
 	private Integer eanTypeId;
 	@Column(name="eantype_code")
-	private Integer eanTypeCode;
+	private String eanTypeCode;
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="company_id")
@@ -37,12 +37,7 @@ public class EANType extends Auditable<Integer> implements Serializable{
 	public void setEanTypeId(Integer eanTypeId) {
 		this.eanTypeId = eanTypeId;
 	}
-	public Integer getEanTypeCode() {
-		return eanTypeCode;
-	}
-	public void setEanTypeCode(Integer eanTypeCode) {
-		this.eanTypeCode = eanTypeCode;
-	}
+	
 	public Company getCompany() {
 		return company;
 	}
@@ -55,7 +50,12 @@ public class EANType extends Auditable<Integer> implements Serializable{
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
-	
+	public String getEanTypeCode() {
+		return eanTypeCode;
+	}
+	public void setEanTypeCode(String eanTypeCode) {
+		this.eanTypeCode = eanTypeCode;
+	}
 	
 	
 }
