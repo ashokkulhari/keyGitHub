@@ -43,7 +43,7 @@ public class CommonUtils {
 					
 					for (Iterator iterator = aclConfigs.iterator(); iterator.hasNext();) {
 						AclConfig aclConfig = (AclConfig) iterator.next();
-						System.out.println("aclConfig   "+aclConfig.getPath());
+//						System.out.println("aclConfig   "+aclConfig.getPath());
 						if(aclConfig.getPath().toLowerCase().startsWith(path.toLowerCase())){
 							System.out.println("Has access to page ...");
 							if(permissionSet.getPermission().getPermissionId().intValue() >= aclConfig.getMinPermission().intValue() ){

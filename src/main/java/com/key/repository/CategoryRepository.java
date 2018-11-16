@@ -7,4 +7,5 @@ import com.key.model.Category;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer>{
 
+	Category findCategoryByCategorySno(Integer categorySno);
 }

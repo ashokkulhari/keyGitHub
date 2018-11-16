@@ -24,4 +24,9 @@ public class CategoryServiceImpl implements CategoryService{
 		return categoryRepository.getOne(id);
 	}
 
+	@Override
+	public Category findCategoryByCategorySno(Integer categorySno) {
+		return categoryRepository.findCategoryByCategorySno(categorySno);
+	}
+
 }

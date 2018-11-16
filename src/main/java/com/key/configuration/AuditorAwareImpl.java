@@ -17,8 +17,8 @@ public class AuditorAwareImpl implements AuditorAware<Integer> {
 //		User user  = ((UserAwareUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		CustomUserDetails userdetails=(CustomUserDetails) authentication.getPrincipal();
-        System.out.println(userdetails.getUserId()+"  getCurrentAuditor "+authentication.getPrincipal().toString() 
-        		+" authorities ="+authentication.getAuthorities());
+//        System.out.println(userdetails.getUserId()+"  getCurrentAuditor "+authentication.getPrincipal().toString() 
+//        		+" authorities ="+authentication.getAuthorities());
 		
 		Long userId = userdetails.getUserId();
         

@@ -12,4 +12,6 @@ public interface CategoryService {
 	public List<Category> getAllCategory();
 	
 	public Category findById(Integer id);
+	
+	Category findCategoryByCategorySno(Integer categorySno);
 }
