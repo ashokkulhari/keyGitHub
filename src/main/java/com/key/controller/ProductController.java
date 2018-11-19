@@ -372,12 +372,11 @@ public class ProductController {
 			if(accountUser!=null){
 				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_POST_PRODUCT_SAVE_URL) ){
 					
-					
 					ProductMaster product= new ProductMaster();
 					List<ProductMaster> products=productMasterService.findByItemCode(productMasterModel.getItemCode());
 					if(products==null || products.size() <1){
 						product = setProductMasterEntity(productMasterModel,product);
-						
+						product.setIsActive(true);
 						product =productMasterService.saveProductMaster(product);
 						maskProduct(response, product);
 						response.put("msg", "Success");
@@ -416,10 +415,46 @@ public class ProductController {
 					ProductMaster product= productMasterService.getProductMasterById(id);
 					if(product!=null){
 						product = setProductMasterEntity(productMasterModel,product);
-						
+						product.setIsActive(true);
 						product =productMasterService.saveProductMaster(product);
 						System.out.println("product ==== "+product);
 						response.put("output", product);
+						response.put("msg", "Success");
+						entity= new ResponseEntity<>(response, HttpStatus.OK);
+					}else{
+						response.put("msg", "Input missing");
+						entity=new ResponseEntity<>(response, HttpStatus.FAILED_DEPENDENCY);
+					}
+					
+				}else{
+					response.put("msg", "User does not have permission..");
+					entity=new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+				}
+			}else{
+				response.put("msg", "User not found.");
+				entity=new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			}
+		
+		return entity;
+	}
+	@RequestMapping(value={ApplicationConstants.REQ_POST_PRODUCT_DELETE_URL}, method = RequestMethod.PUT)
+	public ResponseEntity<?> deleteProduct(@PathVariable("id") int id,
+			@RequestHeader(value="Authorization", defaultValue="Unauthorised") String authorization,
+			UriComponentsBuilder ucBuilder){
+		
+		
+		Map<String, Object> response = new ManagedMap<>();
+		ResponseEntity<Map<String, Object>> entity=null;
+		
+			User accountUser = userService.findUserByEmail(userService.extractUsername(authorization));
+			if(accountUser!=null){
+				if(CommonUtils.validateUserPermission(accountUser,ApplicationConstants.REQ_POST_PRODUCT_DELETE_URL) ){
+					
+					ProductMaster product= productMasterService.getProductMasterById(id);
+					if(product!=null){
+						product.setIsActive(false);
+						product =productMasterService.saveProductMaster(product);
+						response.put("output", true);
 						response.put("msg", "Success");
 						entity= new ResponseEntity<>(response, HttpStatus.OK);
 					}else{

@@ -8,6 +8,8 @@ public class ApplicationConstants {
 	
 	public final static String REQ_GET_PRODUCT_URL="/getproduct";
 	
+	public final static String REQ_POST_PRODUCT_DELETE_URL="/deleteproduct/{id}";
+	
 	public final static String REQ_GET_PRODUCT_BYICODE_URL="/getproductbyicode";
 	
 	public final static String REQ_GET_PRODUCT_BYI_NAME_URL="/getproductbyiname";
