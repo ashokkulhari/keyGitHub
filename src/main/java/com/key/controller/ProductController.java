@@ -79,8 +79,6 @@ public class ProductController {
 	private GroupCodeService groupCodeService;
 	
 	@Autowired
-	private EANTypeService eanTypeService;
-	@Autowired
 	private CountryService countryService;
 	
 	@Autowired
@@ -100,7 +98,8 @@ public class ProductController {
 	
 	@Autowired
 	private ProductMasterService productMasterService;
-	
+	@Autowired
+	private EANTypeService eanTypeService;
 	
 	@RequestMapping(value={"/getpp"}, method = RequestMethod.GET)
 	public ResponseEntity<?> getpp(){
@@ -482,7 +481,7 @@ public class ProductController {
 		product.setColor(colorService.findById(productMasterModel.getColorId()));
 		product.setCompany(companyService.findById(productMasterModel.getCompanyId()));
 		product.setDangerLevel(productMasterModel.getDangerLevel());
-		product.setEanCodeType(productMasterModel.getEanCodeType());
+		product.setEanCodeType(eanTypeService.findById(productMasterModel.getEanCodeType()));
 		product.setGroupCode(groupCodeService.findById(productMasterModel.getGroupCodeId()));
 //					product.setInvoiceDetails(productMasterModel.getInvoiceDetails());
 //					product.setIsActive(isActive);
@@ -496,6 +495,7 @@ public class ProductController {
 		product.setItemBarCode(productMasterModel.getItemBarCode());
 		product.setItemCategorySno(productMasterModel.getItemCategorySno());
 		product.setItemCode(productMasterModel.getItemCode());
+		product.setItemCost(productMasterModel.getItemCost());
 		product.setItemDiscount(productMasterModel.getItemDiscount());
 		product.setItemLocationName(productMasterModel.getItemLocationName());
 		product.setItemMinSellPrice(productMasterModel.getItemMinSellPrice());
@@ -558,6 +558,7 @@ public class ProductController {
 		productMasterModel.setItemBarCode(product.getItemBarCode());
 		productMasterModel.setItemCategorySno(product.getItemCategorySno());
 		productMasterModel.setItemCode(product.getItemCode());
+		productMasterModel.setItemCost(product.getItemCost());
 		productMasterModel.setItemDiscount(product.getItemDiscount());
 		productMasterModel.setItemLocationName(product.getItemLocationName());
 		productMasterModel.setItemMinSellPrice(product.getItemMinSellPrice());
@@ -568,6 +569,9 @@ public class ProductController {
 		productMasterModel.setItemWSalePrice(product.getItemWSalePrice());
 		if(product.getLocation()!=null){
 			productMasterModel.setLocationId(product.getLocation().getLocationId());
+		}
+		if(product.getEanCodeType()!=null){
+			productMasterModel.setEanCodeType(product.getEanCodeType().getEanTypeId());
 		}
 		productMasterModel.setMadeinId(product.getMadeinId());
 		if(product.getManufacture()!=null){

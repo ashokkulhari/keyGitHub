@@ -18,4 +18,9 @@ public class EANTypeServiceImpl implements EANTypeService {
 		return eanTypeRepository.findAll();
 	}
 
+	@Override
+	public EANType findById(Integer id) {
+		return eanTypeRepository.getOne(id);
+	}
+
 }

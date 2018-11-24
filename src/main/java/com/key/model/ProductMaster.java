@@ -64,8 +64,7 @@ public class ProductMaster extends Auditable<Integer> implements Serializable {
 	@Column(name="reo_rder_level",nullable = true)
 	private Double reoRderLevel;
 	
-	@Column(name="ean_code_type",nullable = true)
-	private Integer eanCodeType;
+	
 	@Column(name="is_asset_item",nullable = true)
 	private Boolean isAssetItem;
 	@Column(name="is_cancelled",nullable = true)
@@ -100,6 +99,10 @@ public class ProductMaster extends Auditable<Integer> implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="color_id")
 	private Color color;
+	@ManyToOne
+	@JoinColumn(name="eantype_id")
+	private EANType eanCodeType;
+	
 	//bi-directional many-to-one association to GroupCode
 	@ManyToOne
 	@JoinColumn(name="group_code_id")
@@ -254,12 +257,7 @@ public class ProductMaster extends Auditable<Integer> implements Serializable {
 	public void setReoRderLevel(Double reoRderLevel) {
 		this.reoRderLevel = reoRderLevel;
 	}
-	public Integer getEanCodeType() {
-		return eanCodeType;
-	}
-	public void setEanCodeType(Integer eanCodeType) {
-		this.eanCodeType = eanCodeType;
-	}
+	
 	public Boolean getIsAssetItem() {
 		return isAssetItem;
 	}
@@ -391,6 +389,12 @@ public class ProductMaster extends Auditable<Integer> implements Serializable {
 	}
 	public void setVendor(Vendor vendor) {
 		this.vendor = vendor;
+	}
+	public EANType getEanCodeType() {
+		return eanCodeType;
+	}
+	public void setEanCodeType(EANType eanCodeType) {
+		this.eanCodeType = eanCodeType;
 	}
 	
 	

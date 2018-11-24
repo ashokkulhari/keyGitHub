@@ -28,7 +28,7 @@ public class Country extends Auditable<Integer> implements Serializable{
 	private String countryName;
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="company_id")
+	@JoinColumn(name="company_id")//referencedColumnName = "idcompany"
 	private Company company;
 	@Column(name="is_active")
 	private Boolean isActive;

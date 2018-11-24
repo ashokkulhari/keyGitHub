@@ -9,5 +9,5 @@ import com.key.model.EANType;
 public interface EANTypeService {
 
 	List<EANType> getEANType();
-
+	public EANType findById(Integer id);
 }
