@@ -481,7 +481,7 @@ public class ProductController {
 		product.setColor(colorService.findById(productMasterModel.getColorId()));
 		product.setCompany(companyService.findById(productMasterModel.getCompanyId()));
 		product.setDangerLevel(productMasterModel.getDangerLevel());
-		product.setEanCodeType(eanTypeService.findById(productMasterModel.getEanCodeType()));
+		product.setEanType(eanTypeService.findById(productMasterModel.getEanTypeId()));
 		product.setGroupCode(groupCodeService.findById(productMasterModel.getGroupCodeId()));
 //					product.setInvoiceDetails(productMasterModel.getInvoiceDetails());
 //					product.setIsActive(isActive);
@@ -542,7 +542,7 @@ public class ProductController {
 		}
 		
 		productMasterModel.setDangerLevel(product.getDangerLevel());
-		product.setEanCodeType(product.getEanCodeType());
+		productMasterModel.setEanTypeId(product.getEanType().getEanTypeId());
 		if(product.getGroupCode()!=null){
 			productMasterModel.setGroupCodeId(product.getGroupCode().getGroupCodeId());
 		}
@@ -570,8 +570,8 @@ public class ProductController {
 		if(product.getLocation()!=null){
 			productMasterModel.setLocationId(product.getLocation().getLocationId());
 		}
-		if(product.getEanCodeType()!=null){
-			productMasterModel.setEanCodeType(product.getEanCodeType().getEanTypeId());
+		if(product.getEanType()!=null){
+			productMasterModel.setEanTypeId(product.getEanType().getEanTypeId());
 		}
 		productMasterModel.setMadeinId(product.getMadeinId());
 		if(product.getManufacture()!=null){

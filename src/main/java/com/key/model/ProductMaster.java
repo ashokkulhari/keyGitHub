@@ -101,7 +101,7 @@ public class ProductMaster extends Auditable<Integer> implements Serializable {
 	private Color color;
 	@ManyToOne
 	@JoinColumn(name="eantype_id")
-	private EANType eanCodeType;
+	private EANType eanType;
 	
 	//bi-directional many-to-one association to GroupCode
 	@ManyToOne
@@ -390,12 +390,14 @@ public class ProductMaster extends Auditable<Integer> implements Serializable {
 	public void setVendor(Vendor vendor) {
 		this.vendor = vendor;
 	}
-	public EANType getEanCodeType() {
-		return eanCodeType;
+	public EANType getEanType() {
+		return eanType;
 	}
-	public void setEanCodeType(EANType eanCodeType) {
-		this.eanCodeType = eanCodeType;
+	public void setEanType(EANType eanType) {
+		this.eanType = eanType;
 	}
+	
+	
 	
 	
 

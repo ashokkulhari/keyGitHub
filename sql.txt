@@ -33,13 +33,13 @@ CREATE TABLE IF NOT EXISTS `acl_config` (
   CONSTRAINT `fk_authority_acl` FOREIGN KEY (`authority_id`) REFERENCES `authority` (`authority_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table keydb.acl_config: ~25 rows (approximately)
+-- Dumping data for table keydb.acl_config: ~22 rows (approximately)
 /*!40000 ALTER TABLE `acl_config` DISABLE KEYS */;
 INSERT INTO `acl_config` (`acl_id`, `authority_id`, `type`, `page`, `path`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `min_permission`) VALUES
 	(1, 1, 'has_authority', 'changepassword', '/changepass/', NULL, NULL, NULL, NULL, 4),
 	(2, 2, 'has_authority', 'deleteuser', '/deleteuser/', NULL, NULL, NULL, NULL, 3),
 	(3, 3, 'has_authority', 'accountsall', '/account/**', NULL, NULL, NULL, NULL, 2),
-	(4, 3, 'has_authority', 'getproduct', '/getproduct/{id}', NULL, NULL, NULL, NULL, 1),
+	(4, 3, 'has_authority', 'getproduct', '/getproduct', NULL, NULL, NULL, NULL, 1),
 	(5, 3, 'has_authority', 'getcategory', '/getcategory', NULL, NULL, NULL, NULL, 1),
 	(6, 3, 'has_authority', 'getcolor', '/getcolor', NULL, NULL, NULL, NULL, 1),
 	(7, 3, 'has_authority', 'getcustomer', '/getcustomer', NULL, NULL, NULL, NULL, 1),
@@ -61,7 +61,8 @@ INSERT INTO `acl_config` (`acl_id`, `authority_id`, `type`, `page`, `path`, `cre
 	(23, 3, 'has_authority', 'getproductbyvendor', '/getproductbyvendor', NULL, NULL, NULL, NULL, 1),
 	(24, 3, 'has_authority', 'eantype', '/eantype', NULL, NULL, NULL, NULL, 1),
 	(25, 3, 'has_authority', 'country', '/country', NULL, NULL, NULL, NULL, 1),
-	(26, 3, 'has_authority', 'updateproduct', '/updateproduct/{id}', NULL, NULL, NULL, NULL, 1);
+	(26, 3, 'has_authority', 'updateproduct', '/updateproduct/{id}', NULL, NULL, NULL, NULL, 1),
+	(27, 3, 'has_authority', 'deleteproduct', '/deleteproduct/{id}', NULL, NULL, NULL, NULL, 1);
 /*!40000 ALTER TABLE `acl_config` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.authority
@@ -280,14 +281,14 @@ CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
 -- Dumping data for table keydb.hibernate_sequence: 8 rows
 /*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
 INSERT INTO `hibernate_sequence` (`next_val`) VALUES
-	(30),
-	(30),
-	(30),
-	(30),
-	(30),
-	(30),
-	(30),
-	(30);
+	(35),
+	(35),
+	(35),
+	(35),
+	(35),
+	(35),
+	(35),
+	(35);
 /*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.invoice
@@ -575,7 +576,6 @@ CREATE TABLE IF NOT EXISTS `product_master` (
   `last_modified_by` int(11) DEFAULT NULL,
   `last_modified_date` datetime DEFAULT NULL,
   `item_category_sno` int(11) DEFAULT NULL,
-  `ean_code_type` int(11) DEFAULT NULL,
   `is_active` bit(1) DEFAULT NULL,
   `is_asset_item` bit(1) DEFAULT NULL,
   `is_cancelled` bit(1) DEFAULT NULL,
@@ -587,6 +587,7 @@ CREATE TABLE IF NOT EXISTS `product_master` (
   `sale_unit_id` int(11) DEFAULT NULL,
   `act_pur_cost` double DEFAULT NULL,
   `price_code` double DEFAULT NULL,
+  `eantype_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`item_id`),
   KEY `fk_prod_mastr_sub_cat` (`sub_category_id`),
   KEY `fk_prod_mastr_unit` (`unit_id`),
@@ -600,11 +601,14 @@ CREATE TABLE IF NOT EXISTS `product_master` (
   KEY `FKmbmqkidvkjqbd4olvk144vb1w` (`category_id`),
   KEY `FKi7l47i5mi4t2i6y0q6xhr4hv9` (`purchase_unit_id`),
   KEY `FKdw3b31fo0m2c2kvl4idhqex3w` (`sale_unit_id`),
+  KEY `fk_prod_mastr_eantype` (`eantype_id`),
   CONSTRAINT `FKdw3b31fo0m2c2kvl4idhqex3w` FOREIGN KEY (`sale_unit_id`) REFERENCES `units` (`unit_id`),
   CONSTRAINT `FKi7l47i5mi4t2i6y0q6xhr4hv9` FOREIGN KEY (`purchase_unit_id`) REFERENCES `units` (`unit_id`),
   CONSTRAINT `FKmbmqkidvkjqbd4olvk144vb1w` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`),
+  CONSTRAINT `FKnar1eayyhtu1a8sopoyb7nvo7` FOREIGN KEY (`eantype_id`) REFERENCES `eantype` (`eantype_id`),
   CONSTRAINT `fk_comp_prod_master` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`),
   CONSTRAINT `fk_prod_mastr_color` FOREIGN KEY (`color_id`) REFERENCES `color` (`color_id`),
+  CONSTRAINT `fk_prod_mastr_eantype` FOREIGN KEY (`eantype_id`) REFERENCES `eantype` (`eantype_id`),
   CONSTRAINT `fk_prod_mastr_gcode` FOREIGN KEY (`group_code_id`) REFERENCES `group_code` (`group_code_id`),
   CONSTRAINT `fk_prod_mastr_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`),
   CONSTRAINT `fk_prod_mastr_manufacture` FOREIGN KEY (`manufacture_id`) REFERENCES `manufacture` (`manufacture_id`),
@@ -614,22 +618,26 @@ CREATE TABLE IF NOT EXISTS `product_master` (
   CONSTRAINT `fk_prod_mastr_vendor` FOREIGN KEY (`vendor_id`) REFERENCES `vendor` (`vendor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table keydb.product_master: ~12 rows (approximately)
+-- Dumping data for table keydb.product_master: ~16 rows (approximately)
 /*!40000 ALTER TABLE `product_master` DISABLE KEYS */;
-INSERT INTO `product_master` (`item_id`, `item_code`, `item_name`, `item_bar_code`, `item_location_name`, `unit_id`, `item_cost`, `item_avg_cost`, `item_shop_cost`, `item_sell_price`, `item_tender_price`, `item_min_sell_price`, `item_w_sale_price`, `item_discount`, `sub_category_id`, `group_code_id`, `model_id`, `madein_id`, `color_id`, `vendor_id`, `location_id`, `manufacture_id`, `reo_rder_level`, `max_level`, `min_level`, `danger_level`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `item_category_sno`, `ean_code_type`, `is_active`, `is_asset_item`, `is_cancelled`, `is_foc_allowed`, `is_include_promotion`, `is_work_item`, `category_id`, `purchase_unit_id`, `sale_unit_id`, `act_pur_cost`, `price_code`) VALUES
-	(1, '22', 'fdg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-	(18, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 17:49:40', 6, '2018-11-09 17:49:40', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
-	(19, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 17:52:07', 6, '2018-11-09 17:52:07', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
-	(20, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:06:45', 6, '2018-11-09 18:06:45', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
-	(21, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:10:28', 6, '2018-11-09 18:10:28', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
-	(22, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:56:11', 6, '2018-11-09 18:56:11', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
-	(23, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:58:46', 6, '2018-11-09 18:58:46', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
-	(24, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:59:54', 6, '2018-11-09 18:59:54', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
-	(25, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:07:53', 6, '2018-11-09 19:07:53', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
-	(26, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:09:17', 6, '2018-11-09 19:09:17', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
-	(27, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:10:59', 6, '2018-11-09 19:10:59', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
-	(28, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:12:33', 6, '2018-11-09 19:12:33', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2),
-	(29, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:18:47', 6, '2018-11-09 19:18:47', 1, 2, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2);
+INSERT INTO `product_master` (`item_id`, `item_code`, `item_name`, `item_bar_code`, `item_location_name`, `unit_id`, `item_cost`, `item_avg_cost`, `item_shop_cost`, `item_sell_price`, `item_tender_price`, `item_min_sell_price`, `item_w_sale_price`, `item_discount`, `sub_category_id`, `group_code_id`, `model_id`, `madein_id`, `color_id`, `vendor_id`, `location_id`, `manufacture_id`, `reo_rder_level`, `max_level`, `min_level`, `danger_level`, `company_id`, `is_deleted`, `created_by`, `creation_date`, `last_modified_by`, `last_modified_date`, `item_category_sno`, `is_active`, `is_asset_item`, `is_cancelled`, `is_foc_allowed`, `is_include_promotion`, `is_work_item`, `category_id`, `purchase_unit_id`, `sale_unit_id`, `act_pur_cost`, `price_code`, `eantype_id`) VALUES
+	(1, '22', 'fdg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+	(18, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 17:49:40', 6, '2018-11-09 17:49:40', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(19, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 17:52:07', 6, '2018-11-09 17:52:07', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(20, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:06:45', 6, '2018-11-09 18:06:45', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(21, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:10:28', 6, '2018-11-09 18:10:28', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(22, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:56:11', 6, '2018-11-09 18:56:11', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(23, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:58:46', 6, '2018-11-09 18:58:46', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(24, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 18:59:54', 6, '2018-11-09 18:59:54', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(25, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:07:53', 6, '2018-11-09 19:07:53', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(26, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:09:17', 6, '2018-11-09 19:09:17', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(27, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:10:59', 6, '2018-11-09 19:10:59', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(28, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:12:33', 6, '2018-11-09 19:12:33', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(29, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-09 19:18:47', 6, '2018-11-09 19:18:47', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(30, 'dsfdsfsdds', 'testitemname', 'dsfdsdsfsd', 'dsfsdfsdsdsdfsd', 1, NULL, 3, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 3, 6, 3, 2, 1, NULL, 6, '2018-11-14 18:51:52', 6, '2018-11-14 18:51:52', 1, NULL, b'0', b'0', b'0', b'0', b'0', 1, 3, 2, 2, 2, 1),
+	(32, 'abc_1222', 'testitemname', 'waaawaw', '', 1, NULL, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 3, 3, 1, NULL, 6, '2018-11-23 10:34:22', 6, '2018-11-23 10:34:22', 1, b'1', b'1', b'1', b'1', b'1', b'1', 1, 2, 2, 1, 111, 1),
+	(33, 'abc_1333', 'testitemname', 'waaawaw', '', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 3, 3, 1, NULL, 6, '2018-11-24 18:41:39', 6, '2018-11-24 18:41:39', 1, b'1', b'1', b'1', b'1', b'1', b'1', 1, 2, 2, 1, 111, 1),
+	(34, 'abc_44', 'testitemname', 'waaawaw', '', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 3, 3, 1, NULL, 6, '2018-11-24 19:08:00', 6, '2018-11-24 19:08:00', 1, b'1', b'1', b'1', b'1', b'1', b'1', 1, 2, 2, 1, 111, 1);
 /*!40000 ALTER TABLE `product_master` ENABLE KEYS */;
 
 -- Dumping structure for table keydb.sub_category

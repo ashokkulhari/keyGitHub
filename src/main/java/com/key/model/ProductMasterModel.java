@@ -25,7 +25,7 @@ public class ProductMasterModel {
 	private Double minLevel;
 	private Double reoRderLevel;
 	
-	private Integer eanCodeType;
+	private Integer eanTypeId;
 	private Boolean isAssetItem;
 	private Boolean isCancelled;
 	private Boolean isWorkItem;
@@ -165,12 +165,7 @@ public class ProductMasterModel {
 	public void setReoRderLevel(Double reoRderLevel) {
 		this.reoRderLevel = reoRderLevel;
 	}
-	public Integer getEanCodeType() {
-		return eanCodeType;
-	}
-	public void setEanCodeType(Integer eanCodeType) {
-		this.eanCodeType = eanCodeType;
-	}
+	
 	public Boolean getIsAssetItem() {
 		return isAssetItem;
 	}
@@ -302,6 +297,12 @@ public class ProductMasterModel {
 	}
 	public void setVendorId(Integer vendorId) {
 		this.vendorId = vendorId;
+	}
+	public Integer getEanTypeId() {
+		return eanTypeId;
+	}
+	public void setEanTypeId(Integer eanTypeId) {
+		this.eanTypeId = eanTypeId;
 	}
 	
 	
